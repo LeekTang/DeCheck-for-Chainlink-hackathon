@@ -167,7 +167,6 @@ const LPALL = () => {
         sum = Number(sum) + Number(el.percent)
       }
     });
-    console.log(sum)
     state.LPNow = (sum * 100).toFixed(2)
     return (sum * 100).toFixed(2) + '%'
   }

@@ -506,6 +506,10 @@ const videoPlay = (id) => {
 }
 
 const projectDelite = () => {
+  if(store.searchProjectInfo){
+    console.log('aaaaaaaaaaaaaaaaaaaaaaa',store.searchProjectInfo)
+  }
+  
   request.get(`/plugin/decheck/api/project/detail/${props.projectID}`).then((res) => {
     if(res.tokenAddr){
       res.tokenList = Object.entries(res.tokenAddr)
