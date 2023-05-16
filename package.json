@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build:env": "nuxt build --legacy --mode env",
+    "build:pro": "nuxt build --legacy --mode pro",
     "dev": "nuxt dev --legacy --mode env",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
