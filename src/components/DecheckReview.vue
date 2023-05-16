@@ -24,10 +24,10 @@
         <template #header>
           <div class="flex justify-between items-start">
             <div class="flex">
-              <img :src="state.project.logo" @error="imgError" class="h-[56px] w-[56px] rounded-[10px] mr-[16px]" />
+              <img :src="store.searchProjectInfo.logo" @error="imgError" class="h-[56px] w-[56px] rounded-[10px] mr-[16px]" />
               <div>
                 <p class="text-[20px] text-[#fff]" style="font-family: Hezaedrus-Bold">
-                  {{state.project.name}}
+                  {{store.searchProjectInfo.name}}
                 </p>
                 <p class="text-[14px] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular">
                   Rate this item
@@ -337,6 +337,7 @@ const imgDelete = (index) => {
 };
 
 const submitClick = () => {
+  console.log('aaaaaaaaaaaaaaaaaaaaaaa',store.searchProjectInfo)
     let tagList = []
     checkList.forEach(item => {
       if (item.state == true) {
@@ -361,7 +362,7 @@ const submitClick = () => {
       let data = {
         content: state.textarea,
         projectId: props.projectID,
-        projectName: state.project.name,
+        projectName: store.searchProjectInfo.name,
         chainId:  props.isCheck ? store.chain : proStore.chainID,
         tokenAddr:  props.isCheck ? store.tokenAddr : proStore.tokenAddr,
         score: state.rateValue,
@@ -371,24 +372,24 @@ const submitClick = () => {
         visible: true,
         attachment: state.fileList,
       }
-      request({ url: '/plugin/decheck/api/project/review/add', data, method: 'post' }).then(res => {
-        if (res != null) {
-          ElMessage({
-            message: t('submitSuccess'),
-            type: 'success',
-            offset: 120
-          })
-          checkList.forEach(el => {
-            el.state = false
-          })
-          state.rateValue = 0
-          state.textarea = ""
-          state.reviewShow = false;
-          state.fileList = [];
-          state.elUpList = [];
-          projectInfo();
-        }
-      })
+      // request({ url: '/plugin/decheck/api/project/review/add', data, method: 'post' }).then(res => {
+      //   if (res != null) {
+      //     ElMessage({
+      //       message: t('submitSuccess'),
+      //       type: 'success',
+      //       offset: 120
+      //     })
+      //     checkList.forEach(el => {
+      //       el.state = false
+      //     })
+      //     state.rateValue = 0
+      //     state.textarea = ""
+      //     state.reviewShow = false;
+      //     state.fileList = [];
+      //     state.elUpList = [];
+      //     projectInfo();
+      //   }
+      // })
     }
 }
 
@@ -505,32 +506,12 @@ const videoPlay = (id) => {
   }
 }
 
-const projectDelite = () => {
-  if(store.searchProjectInfo){
-    console.log('aaaaaaaaaaaaaaaaaaaaaaa',store.searchProjectInfo)
-  }
-  
-  request.get(`/plugin/decheck/api/project/detail/${props.projectID}`).then((res) => {
-    if(res.tokenAddr){
-      res.tokenList = Object.entries(res.tokenAddr)
-    }
-    state.project = res
-    if(state.project.auditor){
-      state.project.auditor = state.project.auditor.join()
-    }
-    if(state.project.invest){
-      state.project.invest = state.project.invest.join()
-    }
-  })
-}
-
 const sortClick = (val) => {
   projectInfo();
 };
 
 onMounted(() => {
   projectInfo();
-  projectDelite()
 });
 </script>
 
