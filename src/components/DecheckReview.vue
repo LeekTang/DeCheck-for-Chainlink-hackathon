@@ -337,7 +337,6 @@ const imgDelete = (index) => {
 };
 
 const submitClick = () => {
-  console.log('aaaaaaaaaaaaaaaaaaaaaaa',store.searchProjectInfo)
     let tagList = []
     checkList.forEach(item => {
       if (item.state == true) {
