@@ -123,18 +123,12 @@
             <div class="p-[1.5rem] text-[0.88rem]">
               <div class="h-[3.5rem] flex justify-between items-center border-b border-b-[#FFFFFF1C]">
                 <p class="text-[#FFFFFFA8]">{{ t('price') }}</p>
-                <!-- <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-if="state.isE && state.nowPrice">{{countZeros(state.nowPrice) }}
-                  <span>$0.0</span>
-                  <sub>{{state.priceFi}}</sub>
-                  <span>{{ state.priceTw }}</span>
-                  <span>{{ state.priceTh }}</span>
-                </p>
-                <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-else-if="state.nowPrice && !state.isE">
+                <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-if="state.nowPrice">
                   {{countZeros(state.nowPrice) }}
-                  <template v-if="state.isM">
-                    <span>$0.0</span>
-                    <sub>{{state.priceFi}}</sub>
-                    <span>{{ state.priceTw }}</span>
+                  <template v-if="state.priceTw">
+                    <span>$</span>
+                    <span>{{state.priceFi}}</span>
+                    <sub>{{ state.priceTw }}</sub>
                     <span>{{ state.priceTh }}</span>
                   </template>
                   <template v-else>
@@ -142,8 +136,7 @@
                     <span>{{ state.priceTh }}</span>
                   </template>
                 </p>
-                <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-else>-</p> -->
-                <p class="text-[#FFFFFF] text-[1.5rem] font-bold">{{ state.nowPrice }}</p>
+                <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-else>-</p>
               </div>
               <div class="h-[3.5rem] flex justify-between items-center">
                 <p class="text-[#FFFFFFA8]">DEX</p>
@@ -259,8 +252,6 @@ const { chain, tokenAddr, searchInfo } = storeToRefs(store)
 const state = reactive({
   goInfo: searchInfo.value,
   dialogVisble: false,
-  isE: false,
-  isM: false,
   priceFi: '',
   priceTw: '',
   priceTh: ''
@@ -298,26 +289,17 @@ const countZeros = (num) => {
     state.priceFi = "";
     state.priceTw = ""
     state.priceTh = "";
-    let reg = /\d(?:\.(\d*))?e([+-]\d+)/.exec(num);
-    //判断是否是科学计数法
-    if(reg == null){
-      var str = num.toString();
-      var arr = str.split('.');
-      let regs = /\.0*|0+$/;
-      var zeross = num.toString().match(regs)[0].length - 1
-      if(zeross >= 7){
-        state.isM = true;
-        state.priceFi = zeross;
-        state.priceTh = arr[1].substring(zeross,zeross + 4);
-      }else{
-        state.priceFi = arr[0];
-        state.priceTh = arr[1].substring(0,zeross + 4);
-      }
+    var str = num.toString();
+    var arr = str.split('.');
+    let regs = /\.0*|0+$/;
+    var zeross = num.toString().match(regs)[0].length - 1
+    if(zeross >= 7){
+      state.priceFi = '0.0';
+      state.priceTw = zeross;
+      state.priceTh = arr[1].substring(zeross,zeross + 4);
     }else{
-      state.isE = true
-      state.priceFi = - reg[2] - 1;
-      state.priceTw = Math.abs(num.toString().split('.')[0])
-      state.priceTh = reg[1].substring(0,3);
+      state.priceFi = arr[0];
+      state.priceTh = arr[1].substring(0,zeross + 4);
     }
   }
 }
