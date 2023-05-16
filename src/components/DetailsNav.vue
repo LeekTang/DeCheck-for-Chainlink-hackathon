@@ -23,7 +23,7 @@
         <p class="text-[0.75rem]">{{item.tokenAddr[state.chain]}}</p>
       </div>
     </div>
-    <div class="w-[75rem] scroll min-h-screen p-[0.5rem] mt-[0.5rem]" v-if="state.hotShow">
+    <!-- <div class="w-[75rem] scroll min-h-screen p-[0.5rem] mt-[0.5rem]" v-if="state.hotShow">
       <div class="text-[1rem] text-[#ffffffa8] font-normal my-[1rem]">Most Searches</div>
       <div class="flex flex-wrap justify-between">
         <div class="h-[3rem] w-[36rem] text-[#fff] flex items-center justify-between cursor-pointer border border-solid border-[#ffffff1c] px-[1.5rem] mb-[1rem] rounded-full hover:bg-[#FFFFFF1C]" 
@@ -38,7 +38,7 @@
           </div>
         </div>
       </div>
-      </div> 
+    </div>  -->
   </div>
 </template>
 
@@ -83,18 +83,18 @@ const options = [
 ]
 
 
-const hot = [
-  {name: "PEPE", chain: '1', chainName: 'Ethereum',address: "0x6982508145454ce325ddbe47a25d4ec3d2311933"},
-  {name: "AIDOGE", chain: '42161',chainName: 'Arbitrum', address: "0x09e18590e8f76b6cf471b3cd75fe1a1a9d2b2c2b"},
-  {name: "DOGE", chain: '56',chainName: 'BSC', address: "0xba2ae424d960c26247dd6c32edc70b295c744c43"},
-  {name: "LINK", chain: '1',chainName: 'Ethereum', address: "0x514910771af9ca656af840dff83e8264ecf986ca"},
-  {name: "UNI", chain: '1',chainName: 'Ethereum', address: "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"},
-  {name: "ARB", chain: '42161',chainName: 'Arbitrum', address: "0x912CE59144191C1204E64559FE8253a0e49E6548"},
-  {name: "GMX", chain: '1',chainName: 'Ethereum', address: "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a"},
-  {name: "OP", chain: '10',chainName: 'Optimism', address: "0x4200000000000000000000000000000000000042"},
-  {name: "BLUR", chain: '1',chainName: 'Ethereum', address: "0x5283d291dbcf85356a21ba090e6db59121208b44"},
-  {name: "LOOKS", chain: '1',chainName: 'Ethereum', address: "0xf4d2888d29d722226fafa5d9b24f9164c092421e"},
-]
+// const hot = [
+//   {name: "PEPE", chain: '1', chainName: 'Ethereum',address: "0x6982508145454ce325ddbe47a25d4ec3d2311933"},
+//   {name: "AIDOGE", chain: '42161',chainName: 'Arbitrum', address: "0x09e18590e8f76b6cf471b3cd75fe1a1a9d2b2c2b"},
+//   {name: "DOGE", chain: '56',chainName: 'BSC', address: "0xba2ae424d960c26247dd6c32edc70b295c744c43"},
+//   {name: "LINK", chain: '1',chainName: 'Ethereum', address: "0x514910771af9ca656af840dff83e8264ecf986ca"},
+//   {name: "UNI", chain: '1',chainName: 'Ethereum', address: "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"},
+//   {name: "ARB", chain: '42161',chainName: 'Arbitrum', address: "0x912CE59144191C1204E64559FE8253a0e49E6548"},
+//   {name: "GMX", chain: '1',chainName: 'Ethereum', address: "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a"},
+//   {name: "OP", chain: '10',chainName: 'Optimism', address: "0x4200000000000000000000000000000000000042"},
+//   {name: "BLUR", chain: '1',chainName: 'Ethereum', address: "0x5283d291dbcf85356a21ba090e6db59121208b44"},
+//   {name: "LOOKS", chain: '1',chainName: 'Ethereum', address: "0xf4d2888d29d722226fafa5d9b24f9164c092421e"},
+// ]
 
 
 const getHotProject = () => {
@@ -129,12 +129,12 @@ const showProject = (item) => {
 }
 
 
-const hotJump = (item) => {
-  state.hotShow = false 
-  store.chain = item.chain;
-  store.tokenAddr = item.address;
-  state.isShowAll = false
-}
+// const hotJump = (item) => {
+//   state.hotShow = false 
+//   store.chain = item.chain;
+//   store.tokenAddr = item.address;
+//   state.isShowAll = false
+// }
 
 onMounted(()=>{
   store.chain = state.chain = route.query.chain ? route.query.chain : "1";
