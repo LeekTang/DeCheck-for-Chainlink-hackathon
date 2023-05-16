@@ -164,9 +164,10 @@ const LPALL = () => {
     let sum = 0;
     state.goInfo.lp_holders.forEach(el => {
       if(el.is_locked == 1){
-        sum = sum + el.percent
+        sum = Number(sum) + Number(el.percent)
       }
     });
+    console.log(sum)
     state.LPNow = (sum * 100).toFixed(2)
     return (sum * 100).toFixed(2) + '%'
   }
