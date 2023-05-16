@@ -330,6 +330,7 @@ const getGoPlus = () => {
       } else {
         store.searchInfo = res
         store.tokenID = res.projectId
+        state.goInfo = res
         getPrice()
       }
     }).catch(err => {
