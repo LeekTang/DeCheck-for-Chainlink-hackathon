@@ -1,8 +1,6 @@
 <template>
   <div>
     <template v-if="Object.keys(state.goInfo).length > 0">
-
-
       <div class="w-[75rem] mx-auto mt-[4rem]">
         <div class="text-[1.25rem] text-[#fff] font-extrabold">{{ t('checkReport') }}</div>
         <div class="w-full border border-solid border-[#ffffff1c] rounded-[1.25rem] mt-[1.5rem]">
@@ -332,7 +330,6 @@ const getGoPlus = () => {
       } else {
         store.searchInfo = res
         store.tokenID = res.projectId
-        state.goInfo = searchInfo.value
         getPrice()
       }
     }).catch(err => {

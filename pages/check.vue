@@ -3,7 +3,7 @@
     <HeaderView />
     <DetailsNav />
     <DetailsInfo />
-    <!-- <CheckReport /> -->
+    <CheckReport />
     <CheckBottom />
     <DecheckReview v-if="store.tokenID" :projectID="store.tokenID" :isCheck="true"/>
     <BottomBar class="bottom-0 absolute"/>
