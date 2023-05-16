@@ -100,9 +100,9 @@ const state = reactive({
   isSign: computed(() => store.getIsSign),
 })
 
-watch(tokenID,() => {
-  projectInfo()
-})
+// watch(tokenID,() => {
+//   projectInfo()
+// })
 
 const projectInfo = () => {
   if(tokenID.value){
