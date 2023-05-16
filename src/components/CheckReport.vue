@@ -124,15 +124,14 @@
               <div class="h-[3.5rem] flex justify-between items-center border-b border-b-[#FFFFFF1C]">
                 <p class="text-[#FFFFFFA8]">{{ t('price') }}</p>
                 <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-if="state.nowPrice">
-                  {{countZeros(state.nowPrice) }}
                   <template v-if="state.priceTw">
                     <span>$</span>
-                    <span>{{state.priceFi}}</span>
+                    <span>{{ state.priceFi }}</span>
                     <sub>{{ state.priceTw }}</sub>
                     <span>{{ state.priceTh }}</span>
                   </template>
                   <template v-else>
-                    <span>${{state.priceFi}}.</span>
+                    <span>${{ state.priceFi }}.</span>
                     <span>{{ state.priceTh }}</span>
                   </template>
                 </p>
@@ -171,7 +170,8 @@
                 <div class="h-[17.5rem] w-[16.13rem] bg-[#ffffff1c] rounded-[0.75rem] p-[1rem]">
                   <div class="flex justify-between leading-[1rem]">
                     <p class="text-[1rem] text-[#fff] font-medium">{{ t('sellTax') }}</p>
-                    <p class="text-[1rem] text-[#FF5353FF] font-bold" v-if="state.goInfo.sell_tax">{{ state.goInfo.sell_tax
+                    <p class="text-[1rem] text-[#FF5353FF] font-bold" v-if="state.goInfo.sell_tax">{{
+                      state.goInfo.sell_tax
                       + '%' }}</p>
                     <p class="text-[1rem] text-[#FF5353FF] font-bold" v-else>0%</p>
                   </div>
@@ -285,22 +285,20 @@ const copyClick = (val) => {
 }
 
 const countZeros = (num) => {
-  if(num){
-    state.priceFi = "";
-    state.priceTw = ""
-    state.priceTh = "";
-    var str = num.toString();
-    var arr = str.split('.');
-    let regs = /\.0*|0+$/;
-    var zeross = num.toString().match(regs)[0].length - 1
-    if(zeross >= 7){
-      state.priceFi = '0.0';
-      state.priceTw = zeross;
-      state.priceTh = arr[1].substring(zeross,zeross + 4);
-    }else{
-      state.priceFi = arr[0];
-      state.priceTh = arr[1].substring(0,zeross + 4);
-    }
+  state.priceFi = "";
+  state.priceTw = ""
+  state.priceTh = "";
+  var str = num.toString();
+  var arr = str.split('.');
+  let regs = /\.0*|0+$/;
+  var zeross = num.toString().match(regs)[0].length - 1
+  if (zeross >= 7) {
+    state.priceFi = '0.0';
+    state.priceTw = zeross;
+    state.priceTh = arr[1].substring(zeross, zeross + 4);
+  } else {
+    state.priceFi = arr[0];
+    state.priceTh = arr[1].substring(0, zeross + 4);
   }
 }
 
@@ -326,9 +324,12 @@ const getGoPlus = () => {
 }
 
 const getPrice = () => {
-  let nowChain = webList.find(el=> el.chain == store.chain)
-  request.get(`/plugin/decheck/api/security/token/price/${nowChain.priceLabel}/${tokenAddr.value}`).then(res=>{
-    state.nowPrice = res
+  let nowChain = webList.find(el => el.chain == store.chain)
+  request.get(`/plugin/decheck/api/security/token/price/${nowChain.priceLabel}/${tokenAddr.value}`).then(res => {
+    if (res) {
+      state.nowPrice = res
+      countZeros(state.nowPrice)
+    }
   })
 }
 
@@ -338,7 +339,8 @@ const closeDia = () => {
 
 </script>
 
-<style scoped>.basic-bg {
+<style scoped>
+.basic-bg {
   background: linear-gradient(225deg, #363574 0%, #2A1C52 100%);
 }
 
