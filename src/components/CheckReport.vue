@@ -123,7 +123,7 @@
             <div class="p-[1.5rem] text-[0.88rem]">
               <div class="h-[3.5rem] flex justify-between items-center border-b border-b-[#FFFFFF1C]">
                 <p class="text-[#FFFFFFA8]">{{ t('price') }}</p>
-                <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-if="state.isE && state.nowPrice">{{countZeros(state.nowPrice) }}
+                <!-- <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-if="state.isE && state.nowPrice">{{countZeros(state.nowPrice) }}
                   <span>$0.0</span>
                   <sub>{{state.priceFi}}</sub>
                   <span>{{ state.priceTw }}</span>
@@ -142,7 +142,8 @@
                     <span>{{ state.priceTh }}</span>
                   </template>
                 </p>
-                <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-else>-</p>
+                <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-else>-</p> -->
+                <p class="text-[#FFFFFF] text-[1.5rem] font-bold">{{ state.nowPrice }}</p>
               </div>
               <div class="h-[3.5rem] flex justify-between items-center">
                 <p class="text-[#FFFFFFA8]">DEX</p>
