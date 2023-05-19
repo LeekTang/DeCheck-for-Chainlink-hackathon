@@ -153,8 +153,17 @@
                 <div class="h-[17.5rem] w-[16.13rem] bg-[#ffffff1c] rounded-[0.75rem] p-[1rem]">
                   <div class="flex justify-between leading-[1rem]">
                     <p class="text-[1rem] text-[#fff] font-medium">{{ t('buyTax') }}</p>
-                    <p class="text-[1rem] text-[#11B466] font-bold" v-if="state.goInfo.buy_tax">{{ state.goInfo.buy_tax +
-                      '%' }}</p>
+                    <p class="text-[1rem] text-[#11B466] font-bold" v-if="state.goInfo.buy_tax">
+                      <template v-if="state.goInfo.buy_tax <= 0">
+                        0%
+                      </template>
+                      <template v-else-if="state.goInfo.buy_tax > 0 && state.goInfo.buy_tax < 1">
+                        {{ (state.goInfo.buy_tax * 100).toFixed(2) + '%' }}
+                      </template>
+                      <template v-else>
+                        100%
+                      </template>
+                    </p>
                     <p class="text-[1rem] text-[#11B466] font-bold" v-else>0%</p>
                   </div>
                   <div
@@ -170,9 +179,17 @@
                 <div class="h-[17.5rem] w-[16.13rem] bg-[#ffffff1c] rounded-[0.75rem] p-[1rem]">
                   <div class="flex justify-between leading-[1rem]">
                     <p class="text-[1rem] text-[#fff] font-medium">{{ t('sellTax') }}</p>
-                    <p class="text-[1rem] text-[#FF5353FF] font-bold" v-if="state.goInfo.sell_tax">{{
-                      state.goInfo.sell_tax
-                      + '%' }}</p>
+                    <p class="text-[1rem] text-[#FF5353FF] font-bold" v-if="state.goInfo.sell_tax">
+                      <template v-if="state.goInfo.sell_tax <= 0">
+                        0%
+                      </template>
+                      <template v-else-if="state.goInfo.sell_tax > 0 && state.goInfo.sell_tax < 1">
+                        {{ (state.goInfo.sell_tax * 100).toFixed(2) + '%' }}
+                      </template>
+                      <template v-else>
+                        100%
+                      </template>
+                    </p>
                     <p class="text-[1rem] text-[#FF5353FF] font-bold" v-else>0%</p>
                   </div>
                   <div

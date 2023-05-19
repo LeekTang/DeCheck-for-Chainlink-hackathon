@@ -6,7 +6,7 @@
         <NuxtLink to="/" activeClass="font-extrabold text-[#fff]">{{ t('Home') }}</NuxtLink>
         <NuxtLink to="/explorer" activeClass="font-extrabold text-[#fff]">{{ t('Explorer') }}</NuxtLink>
         <NuxtLink to="/dao" activeClass="font-extrabold text-[#fff]">{{ t('DeCheckDAO') }}</NuxtLink>
-        <NuxtLink to="/check" activeClass="font-extrabold text-[#fff]">{{ t('Check') }}</NuxtLink>
+        <a href="/check" :class="`${route.name == 'check' ? 'font-extrabold text-[#fff]' : ''} `">{{ t('Check') }}</a>
       </div>
       <div class="flex">
         <client-only>
