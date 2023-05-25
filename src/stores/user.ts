@@ -11,6 +11,7 @@ export const userStore = defineStore('user',{
       chain: 1,
       tokenID: "",
       tokenAddr: "",
+      isMobile: false,
     }
   },
   getters: {

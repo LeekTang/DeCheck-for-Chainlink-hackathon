@@ -8,7 +8,7 @@ delete colors.trueGray;
 delete colors.coolGray;
 delete colors.blueGray;
 module.exports = {
-  content: ['./app.vue', './src/components/*.{vue,js}', './pages/*.{vue,js}'],
+  content: ['./app.vue', './src/components/*.{vue,js}', './src/components/mobile/*.{vue,js}','./pages/*.{vue,js}'],
   theme: {
 		colors: {
 			...colors,

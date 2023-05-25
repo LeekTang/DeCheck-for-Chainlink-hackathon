@@ -1,29 +1,54 @@
 <template>
-  <div class="relative min-w-[1200px] w-full text-gray-700 bg-[#0a0118]">
-    <HeaderView />
-    <TopView />
-    <Introduce />
-    <HotRevi />
-    <Superiority />
-    <Contract />
-    <BottomBar />
-  </div>
+  <template v-if="!state.isMobile">
+    <div class="relative min-w-[1200px] w-full text-gray-700 bg-[#0a0118]">
+      <HeaderView />
+      <TopView />
+      <Introduce />
+      <HotRevi />
+      <Superiority />
+      <Contract />
+      <BottomBar />
+    </div>
+  </template>
+  <template v-else>
+    <div class="bg-[#070312] min-h-screen">
+      <mbHeader></mbHeader>
+      <mbHot></mbHot>
+      <mbPor></mbPor>
+    </div>
+  </template>
 </template>
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, reactive } from 'vue'
 import HeaderView from '@/src/components/Header.vue';
 import TopView from '@/src/components/TopModel.vue'
 import Introduce from '@/src/components/Introduce.vue'
 import HotRevi from '@/src/components/hotRevi.vue'
 import Superiority from '@/src/components/Superiority.vue'
 import Contract from '@/src/components/Contract.vue'
-import Decheck from '@/src/components/DecheckDao.vue'
-import ToOther from '@/src/components/ToOther.vue'
 import BottomBar from '@/src/components/BottomBar.vue'
-import { useI18n } from 'vue-i18n'
-const { t, locale } = useI18n();
+import mbHeader from '@/src/components/mobile/mbHeader.vue'
+import mbHot from '@/src/components/mobile/mbHotProject.vue'
+import mbPor from '@/src/components/mobile/mbProject.vue'
+
+const state = reactive({
+  isMobile: false
+})
 
 onMounted(() => {
+  let flag = navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+  );
+  state.isMobile = !!flag;
+  window.addEventListener('resize', () => {
+    setTimeout(() => {
+      let flag = navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+      );
+      state.isMobile = !!flag;
+    }, 200);
+  })
+
   var lis = document.querySelectorAll('.myhoverbox');
   for (var i = 0; i < lis.length; i++) {
     // 鼠标经过li触发事件

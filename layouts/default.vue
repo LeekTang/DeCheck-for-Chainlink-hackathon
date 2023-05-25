@@ -10,4 +10,23 @@
 <script setup>
 import '../assets/css/index.css'
 import { ElBacktop } from 'element-plus';
+import { onMounted } from 'vue'
+import { userStore } from '@/src/stores/user';
+const store = userStore();
+
+const isMobile = () => {
+  let flag = navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+  );
+  return flag;
+}
+
+onMounted(() => {
+  store.isMobile = !!isMobile();
+  window.addEventListener('resize', () => {
+    setTimeout(() => {
+      store.isMobile = !!isMobile();
+    }, 200);
+  })
+})
 </script>
