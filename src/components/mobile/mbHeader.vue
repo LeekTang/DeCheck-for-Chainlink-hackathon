@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-between items-center p-[1rem]">
-    <div class="text-[1rem] text-[#fff]" style="font-family:Hezaedrus-Bold">EXPLORER</div>
+    <div class="text-[1rem] text-[#fff]" style="font-family:Hezaedrus-Bold"><slot name="left"></slot></div>
     <div class="flex flex-row">
       <div class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c]" @click="changeLanguage">
         <img src="/images/mobile/home/net.svg" class="h-[18px] w-[18px]" />

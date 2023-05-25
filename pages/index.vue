@@ -12,7 +12,11 @@
   </template>
   <template v-else>
     <div class="bg-[#070312] min-h-screen">
-      <mbHeader></mbHeader>
+      <mbHeader>
+        <template v-slot:left>
+          EXPLORER
+        </template>
+      </mbHeader>
       <mbHot></mbHot>
       <mbPor></mbPor>
     </div>
