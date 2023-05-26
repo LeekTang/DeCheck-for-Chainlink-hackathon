@@ -192,7 +192,7 @@ import { Plus } from "@element-plus/icons-vue";
 import { ElRate, ElImage, ElMessage } from "element-plus";
 import SwiperCore, { Autoplay, Navigation } from "swiper";
 import Swipers from "swiper";
-import { onMounted, ref, reactive, defineProps } from "vue";
+import { onMounted, reactive } from "vue";
 import request from "@/src/utils/request";
 import web3js from "@/src/utils/link";
 import { abbr,imgError, timestampToTime, matchType } from "@/src/utils/utils";
