@@ -53,12 +53,14 @@
       </div>
     </van-action-sheet>
     <div class="flex items-center justify-between mt-[10px]">
-      <div
+      <div @click="state.isCollect = !state.isCollect"
         class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px]">
-        <img src="/images/mobile/project/collect-not.svg" class="h-[24px] w-[24px]" />
-        <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">Collect</p>
+        <img :src="state.isCollect ? '/images/mobile/project/collected.svg' : '/images/mobile/project/collect-not.svg'"
+          class="h-[24px] w-[24px]" />
+        <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">{{ state.isCollect ? 'Collected' :
+          'Collect' }}</p>
       </div>
-      <div
+      <div @click="state.linkShow = true"
         class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px]">
         <img src="/images/mobile/project/link.svg" class="h-[24px] w-[24px]" />
         <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">Links</p>
@@ -69,6 +71,16 @@
         <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">Share</p>
       </div>
     </div>
+    <van-action-sheet v-model:show="state.linkShow" title="LINKS" :closeable="false">
+      <van-cell-group inset :border="false" style="font-family: Hezaedrus-Medium;">
+        <van-cell :border="false" v-for="item in state.links" :key="item.name" :title="item.name" is-link
+          :url="item.webSrc">
+          <template #icon>
+            <img :src="item.icon" class="h-[1.5rem] w-[1.5rem] mr-[0.625rem]" />
+          </template>
+        </van-cell>
+      </van-cell-group>
+    </van-action-sheet>
     <div class="flex h-[28px] leading-[28px] overflow-x-scroll mt-[32px]" style="font-family: Hezaedrus-Bold;">
       <span v-for="(item, index) in tabList" :key="index" @click="tabHandle(item.value)"
         :class="`${item.value == state.tabIndex ? 'text-[#fff] tabItem' : 'text-[#ffffff54]'}  relative text-[14px] flex-shrink-0 inline-block mr-[24px]`">
@@ -131,31 +143,210 @@
         </div>
       </div>
     </div>
-    <div class="text-[#fff]" v-else-if="state.tabIndex == 2">222222</div>
-    <div class="text-[#fff]" v-else>333333333333333333</div>
+    <div class="text-[#fff]" v-else-if="state.tabIndex == 2">
+      <div class="border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem] p-[1rem] mt-[1rem]">
+        <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Token Name</p>
+          <div class="text-[0.75rem] text-[#ffffff]" style="font-family: Hezaedrus-Medium;">PEPE(Pepe)</div>
+        </div>
+        <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Contract Creator</p>
+          <div class="text-[0.75rem] text-[#ffffff] flex " style="font-family: Hezaedrus-Medium;">
+            <p>0xB939...09c2</p>
+            <img src="/images/mobile/common/copy.svg" class="h-[16px] w-[16px] ml-[0.5rem]" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Contract Owner</p>
+          <div class="text-[0.75rem] text-[#ffffff] flex " style="font-family: Hezaedrus-Medium;">
+            <p>0xB939...09c2</p>
+            <img src="/images/mobile/common/copy.svg" class="h-[16px] w-[16px] ml-[0.5rem]" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Total Supply</p>
+          <div class="text-[0.75rem] text-[#ffffff] flex " style="font-family: Hezaedrus-Medium;">
+            <p>0xB939...09c2</p>
+            <img src="/images/mobile/common/copy.svg" class="h-[16px] w-[16px] ml-[0.5rem]" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Buy Tax</p>
+          <div class="text-[0.75rem] text-[#11B466]" style="font-family: Hezaedrus-Medium;">51.5%</div>
+        </div>
+        <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Sell Tax</p>
+          <div class="text-[0.75rem] text-[#FF4242]" style="font-family: Hezaedrus-Medium;">19.6%</div>
+        </div>
+      </div>
+      <!-- holder -->
+      <div class="border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem] p-[1rem] mt-[1rem]">
+        <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">Token Holders Info</p>
+        <div class="flex items-center justify-between text-[1.125rem] font-bold mt-[1rem]"
+          style="font-family: Hezaedrus-Bold;">
+          <div class="text-[#ffffff]">
+            <p>116500</p>
+            <p class="text-[0.75rem] text-[#ffffffa8] leading-[0.75rem] font-normal"
+              style="font-family: Hezaedrus-Regular;">Token Holders </p>
+          </div>
+          <p class="text-[#11B466]">34.96%</p>
+        </div>
+        <van-progress :percentage="34.96" stroke-width="8" color="#11B466" :show-pivot="false" class="mt-[0.625rem]" />
+        <div class="mt-[1.5rem]">
+          <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">Top 10 Holders Ratio
+          </p>
+          <template v-for="(item, index) in holderList" :key="index">
+            <div v-if="index < state.holderMore"
+              class="flex items-end justify-between border-b border-[#ffffff1c] py-[0.625rem]">
+              <div class="flex items-start">
+                <img v-if="index == 0" src="/images/no1.svg" class="h-[1rem] w-[1rem] mr-[0.5rem]" />
+                <img v-else-if="index == 1" src="/images/no2.svg" class="h-[1rem] w-[1rem] mr-[0.5rem]" />
+                <img v-else-if="index == 2" src="/images/no3.svg" class="h-[1rem] w-[1rem] mr-[0.5rem]" />
+                <p v-else class="text-[0.75rem] text-[#fff] font-bold w-[1rem] mr-[0.5rem]"
+                  style="font-family: Hezaedrus-Bold;">{{ index + 1 }}</p>
+                <div class="text-[0.75rem] font-normal" style="font-family: Hezaedrus-Regular;">
+                  <p class="text-[#ffffffa8]">{{ item.address }}</p>
+                  <div class="flex items-center">
+                    <p class="text-[#fff]">{{ item.num }}</p>
+                    <img src="/images/contract_icon.svg" v-if="item.islock" class="h-[1rem] w-[1rem] ml-[0.625rem]" />
+                  </div>
+                </div>
+              </div>
+              <p class="text-[0.75rem] text-[#11B466] font-bold" style="font-family: Hezaedrus-Bold;">({{
+                item.proportion }})</p>
+            </div>
+          </template>
+          <div v-if="holderList.length > 3" @click="showMore(1)"
+            class="h-[2.5rem] border border-[#ffffffa8] rounded-[0.75rem] text-center leading-[2.5rem] text-[0.875rem] text-[#fff] font-medium mt-[1rem]"
+            style="font-family: Hezaedrus-Medium;">
+            {{ state.holderMore == 3 ? 'VIEW ALL' : 'PUT AWAY' }}
+          </div>
+        </div>
+      </div>
+      <!-- pool -->
+      <div class="border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem] p-[1rem] mt-[1rem]">
+        <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">LP Pool Info</p>
+        <div class="flex items-center justify-between text-[1.125rem] font-bold mt-[1rem]"
+          style="font-family: Hezaedrus-Bold;">
+          <div class="text-[#ffffff]">
+            <p>116500</p>
+            <p class="text-[0.75rem] text-[#ffffffa8] leading-[0.75rem] font-normal"
+              style="font-family: Hezaedrus-Regular;">Token Holders </p>
+          </div>
+          <p class="text-[#9044FF]">34.96%</p>
+        </div>
+        <van-progress :percentage="34.96" stroke-width="8" color="#9044FF" :show-pivot="false" class="mt-[0.625rem]" />
+        <div class="mt-[1.5rem]">
+          <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">Top 10 Holders Ratio
+          </p>
+          <template v-for="(item, index) in holderList" :key="index">
+            <div v-if="index < state.poolMore"
+              class="flex items-end justify-between border-b border-[#ffffff1c] py-[0.625rem]">
+              <div class="flex items-start">
+                <img v-if="index == 0" src="/images/no1.svg" class="h-[1rem] w-[1rem] mr-[0.5rem]" />
+                <img v-else-if="index == 1" src="/images/no2.svg" class="h-[1rem] w-[1rem] mr-[0.5rem]" />
+                <img v-else-if="index == 2" src="/images/no3.svg" class="h-[1rem] w-[1rem] mr-[0.5rem]" />
+                <p v-else class="text-[0.75rem] text-[#fff] font-bold w-[1rem] mr-[0.5rem]"
+                  style="font-family: Hezaedrus-Bold;">{{ index + 1 }}</p>
+                <div class="text-[0.75rem] font-normal" style="font-family: Hezaedrus-Regular;">
+                  <p class="text-[#ffffffa8]">{{ item.address }}</p>
+                  <div class="flex items-center">
+                    <p class="text-[#fff]">{{ item.num }}</p>
+                    <img src="/images/contract_icon.svg" v-if="item.islock" class="h-[1rem] w-[1rem] ml-[0.625rem]" />
+                  </div>
+                </div>
+              </div>
+              <p class="text-[0.75rem] text-[#9044FF] font-bold" style="font-family: Hezaedrus-Bold;">({{
+                item.proportion }})</p>
+            </div>
+          </template>
+          <div v-if="holderList.length > 3" @click="showMore(2)"
+            class="h-[2.5rem] border border-[#ffffffa8] rounded-[0.75rem] text-center leading-[2.5rem] text-[0.875rem] text-[#fff] font-medium mt-[1rem]"
+            style="font-family: Hezaedrus-Medium;">
+            {{ state.poolMore == 3 ? 'VIEW ALL' : 'PUT AWAY' }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-[#fff]" v-else>
+      <div class="border border-[#ffffff1c] p-[1rem] rounded-[0.75rem] mt-[1rem]">
+        <template v-for="item in listOrder" :key="item">
+          <div class="flex flex-col border-b-2 border-b-[#FFFFFF1C] mt-[0.75rem]">
+            <div class="flex items-center">
+              <template v-if="item.grade == 1">
+                <img
+                  :src="state.goInfo[item.key] == 1 ? '/images/danger.svg' : (state.goInfo[item.key] == 0 ? '/images/success.svg' : '/images/warning.svg')"
+                  class="h-[1rem] w-[1rem] mr-[0.5rem]">
+              </template>
+              <template v-else-if="item.grade == 2">
+                <img
+                  :src="state.goInfo[item.key] == 1 ? '/images/warning.svg' : (state.goInfo[item.key] == 0 ? '/images/success.svg' : '/images/danger.svg')"
+                  class="h-[1rem] w-[1rem] mr-[0.5rem]">
+              </template>
+              <template v-else-if="item.grade == 3">
+                <img
+                  :src="state.goInfo[item.key] == 1 ? '/images/success.svg' : (state.goInfo[item.key] == 0 ? '/images/danger.svg' : '/images/warning.svg')"
+                  class="h-[1rem] w-[1rem] mr-[0.5rem]">
+              </template>
+              <template v-else-if="item.grade == 4">
+                <img
+                  :src="state.goInfo[item.key] == 1 ? '/images/success.svg' : (state.goInfo[item.key] == 0 ? '/images/warning.svg' : '/images/danger.svg')"
+                  class="h-[1rem] w-[1rem] mr-[0.5rem]">
+              </template>
+              <template v-else>
+                <img
+                  :src="state.goInfo[item.key] == 1 ? '/images/danger.svg' : (state.goInfo[item.key] == 0 ? '/images/warning.svg' : '/images/success.svg')"
+                  class="h-[1rem] w-[1rem] mr-[0.5rem]">
+              </template>
+              <p class="text-[0.875rem] text-[#fff] font-medium"
+                :style="{ color: state.goInfo[item.key] == 0 ? item.color0 : item.color1 }"
+                style="font-family: Hezaedrus-Medium;">
+                {{ t(item.key + state.goInfo[item.key]) }}</p>
+            </div>
+
+            <p class="text-[0.75rem] text-[#FFFFFFA8] my-[0.75rem]">{{ t(item.key + 'Tips') }}</p>
+          </div>
+        </template>
+      </div>
+      <p class="text-[0.75rem] text-[#fff] font-bold mt-[0.875rem]">{{ t('goTitle') }}</p>
+      <div class="text-[0.75rem] text-[#FFFFFFA8] leading-[0.875rem] mt-[0.625rem]">
+        <p>{{ t('goTips1') }}</p>
+        <p>{{ t('goTips2') }}</p>
+      </div>
+      <a href="https://gopluslabs.io/" target="_blank"><img src="/images/goplus.png"
+          class="h-[1.5rem] w-[10.5rem] mt-[0.625rem] mb-[1rem]" /></a>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { reactive, onMounted } from 'vue'
-import link from '~/src/utils/link'
+import request from '@/src/utils/request'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n();
 const state = reactive({
   rate: 3,
   chainShow: false,
+  isCollect: false,
   chainId: '',
   chainName: '',
   chainAddress: '',
   links: [
-    { title: 'Website', icon: '', address: '' },
-    { title: 'Twitter', icon: '', address: '' },
-    { title: 'Telegram', icon: '', address: '' },
-    { title: 'Discore', icon: '', address: '' },
-    { title: 'Reddit', icon: '', address: '' },
-    { title: 'Github', icon: '', address: '' },
-    { title: 'Website', icon: '', address: '' },
+    { name: 'web', icon: '/images/web-icon.svg', tip: 'Official website', webSrc: 'https://decheck.io' },
+    { name: 'twitter', icon: '/images/twitter-icon.svg', tip: 'Twitter', webSrc: 'https://decheck.io' },
+    { name: 'telegram', icon: '/images/telegram-icon.svg', tip: 'Telegram', webSrc: 'https://decheck.io' },
+    { name: 'discord', icon: '/images/discord-icon.svg', tip: 'Discord', webSrc: 'https://decheck.io' },
+    { name: 'youtube', icon: '/images/youtube.svg', tip: 'YouTube', webSrc: 'https://decheck.io' },
+    { name: 'reddit', icon: '/images/reddit.svg', tip: 'Reddit', webSrc: 'https://decheck.io' },
+    { name: 'github', icon: '/images/github-icon.svg', tip: 'Github', webSrc: 'https://decheck.io' },
+    { name: 'whitePaper', icon: '/images/whitePaper.svg', tip: 'WhitePaper', webSrc: 'https://decheck.io' },
   ],
   tabIndex: 1,
   reviewRate: 0,
+  linkShow: false,
+  holderMore: 3,
+  poolMore: 3,
+  goInfo: ""
 })
 
 const options = [
@@ -197,10 +388,61 @@ const reviewList = [
   { id: 4, address: '0xB939...09c2', attestation: true, rate: 4, time: '2023-06-23', reviewed: 25, tag: ['General', 'Contract', 'Tokenomics'], content: 'Within our ventures, the expansion circuit of Ethereum is inevitable. It is just a matter of how to make decisions on different projects with different technical points in...', like: false, likeNum: 12 },
 ]
 
+const holderList = [
+  { address: '0xB939...09c2', num: '12649531966231.00', proportion: '28.73%', islock: true },
+  { address: '0xB939...09c2', num: '12649531966231.00', proportion: '28.73%', islock: true },
+  { address: '0xB939...09c2', num: '12649531966231.00', proportion: '28.73%', islock: true },
+  { address: '0xB939...09c2', num: '12649531966231.00', proportion: '28.73%', islock: false },
+  { address: '0xB939...09c2', num: '12649531966231.00', proportion: '28.73%', islock: true },
+  { address: '0xB939...09c2', num: '12649531966231.00', proportion: '28.73%', islock: false },
+  { address: '0xB939...09c2', num: '12649531966231.00', proportion: '28.73%', islock: true },
+]
+
+const showMore = (type) => {
+  if (type == 1) {
+    state.holderMore == 3 ? state.holderMore = 10 : state.holderMore = 3
+  } else {
+    state.poolMore == 3 ? state.poolMore = 10 : state.poolMore = 3
+  }
+}
+
+//0:state2  1:state1  unknown:state3
+//#FF5353 #FFB524 #1cb071
+const listOrder = [
+  { key: 'is_honeypot', grade: 1, color1: '#FF5353', color0: '#1cb071' },
+  { key: 'is_open_source', grade: 3, color1: '#1cb071', color0: '#FF5353' },
+  { key: 'is_proxy', grade: 2, color1: '#FFB524', color0: '#1cb071' },
+  { key: 'owner_change_balance', grade: 1, color1: '#FF5353', color0: '#1cb071' },
+  { key: 'slippage_modifiable', grade: 1, color1: '#FF5353', color0: '#1cb071' },
+  { key: 'is_whitelisted', grade: 2, color1: '#FFB524', color0: '#1cb071' },
+  { key: 'is_blacklisted', grade: 2, color1: '#FFB524', color0: '#1cb071' },
+  { key: 'is_mintable', grade: 2, color1: '#FFB524', color0: '#1cb071' },
+  { key: 'can_take_back_ownership', grade: 1, color1: '#FF5353', color0: '#1cb071' },
+  { key: 'hidden_owner', grade: 1, color1: '#FF5353', color0: '#1cb071' },
+  { key: 'selfdestruct', grade: 1, color1: '#FF5353', color0: '#1cb071' },
+  { key: 'external_call', grade: 2, color1: '#FFB524', color0: '#1cb071' },
+  { key: 'cannot_buy', grade: 2, color1: '#FFB524', color0: '#1cb071' },
+  { key: 'transfer_pausable', grade: 1, color1: '#FF5353', color0: '#1cb071' },
+  { key: 'is_in_dex', grade: 4, color1: '#1cb071', color0: '#FFB524' },
+  { key: 'cannot_sell_all', grade: 2, color1: '#FFB524', color0: '#1cb071' },
+  { key: 'is_anti_whale', grade: 2, color1: '#FFB524', color0: '#1cb071' },
+  { key: 'trading_cooldown', grade: 2, color1: '#FFB524', color0: '#1cb071' },
+  { key: 'personal_slippage_modifiable', grade: 2, color1: '#FFB524', color0: '#1cb071' }
+]
+
+const getProject = () => {
+  request.get(`/plugin/decheck/api/security/token/1/0x6982508145454ce325ddbe47a25d4ec3d2311933`).then((res) => {
+    state.goInfo = res
+  }).catch(err => {
+    store.searchInfo = ''
+  })
+}
+
 onMounted(() => {
   state.chainId = options[0].value
   state.chainName = options[0].label
   state.chainAddress = options[0].address
+  getProject()
 })
 </script>
 

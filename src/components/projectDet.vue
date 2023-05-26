@@ -55,7 +55,7 @@
 </template>
 <script setup>
 import { ElRate, ElMessage } from 'element-plus'
-import { onMounted,reactive,defineProps } from 'vue'
+import { onMounted,reactive } from 'vue'
 import web3js from '@/src/utils/link'
 import request from '@/src/utils/request'
 import { abbr, imgError, copyToClipBoard,webList } from '@/src/utils/utils'
