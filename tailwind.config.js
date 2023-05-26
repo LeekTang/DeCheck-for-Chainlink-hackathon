@@ -8,8 +8,8 @@ delete colors.trueGray;
 delete colors.coolGray;
 delete colors.blueGray;
 module.exports = {
-  content: ['./app.vue', './src/components/*.{vue,js}', './src/components/mobile/*.{vue,js}','./pages/*.{vue,js}'],
-  theme: {
+	content: ['./app.vue', './src/components/*.{vue,js}', './src/components/mobile/*.{vue,js}', './pages/*.{vue,js}'],
+	theme: {
 		colors: {
 			...colors,
 			green: colors.emerald,
@@ -20,20 +20,21 @@ module.exports = {
 			trueGray: colors.neutral,
 			warmGray: colors.stone,
 			lightBlue: colors.sky,
+			textGray: 'rgba(255, 255, 255, 0.66)',
 		},
 		extend: {
 			fontFamily: {
 				'sans': ['PingFang', 'Helvetica', 'Arial', 'sans-serif']
-			  }
+			}
 		},
 	},
-  variants: {
+	variants: {
 		extend: {
 			backgroundColor: ['dark'],
 			textColor: ['dark'],
 		},
 	},
-  plugins: [
+	plugins: [
 		plugin(function ({ addVariant, prefix, e }) {
 			addVariant('dark', ({ modifySelectors, separator }) => {
 				modifySelectors(({ selector }) => {
