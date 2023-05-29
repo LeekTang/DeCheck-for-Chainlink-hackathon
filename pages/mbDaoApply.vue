@@ -8,8 +8,8 @@
         <div class="w-[100%] pt-[16px] min-h-screen overflow-y-auto overscroll-y-contain"
             style="font-family: Hezaedrus-Medium;">
             <img class="object-cover w-[100%] mb-[16px]" src="/images/mobile/dao/genesis.svg" alt="">
-            <panel class="py-[12px]" :type="type" progress="pending"></panel>
-            <panel class="py-[12px]" :type="type" progress="pending"></panel>
+            <panel class="py-[12px]" :type="type" progress="success"></panel>
+            <panel class="py-[12px]" :type="type" progress="failure"></panel>
             <article class="text-[14px] text-center text-textGray py-[6px,32px]" style="font-family: Hezaedrus-regular;">
                 DeCheck will determine if you have
                 code review capability based on your reviews</article>
