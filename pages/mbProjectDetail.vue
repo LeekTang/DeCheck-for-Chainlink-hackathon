@@ -90,7 +90,7 @@
     <div class="text-[#fff] mt-[1rem]" v-if="state.tabIndex == 1">
       <div class="p-[16px] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem]">
         <p class="text-[16px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">RATE THIS ITEM</p>
-        <van-rate v-model="state.reviewRate" :size="30" color="#FFB524" class="justify-between my-[1rem]" />
+        <van-rate v-model="state.reviewRate" :size="30" color="#FFB524" class="justify-between my-[1rem]" @click="reviewHandle"/>
         <p class="text-[14px] text-[#9044FF]" style="font-family: Hezaedrus-Bold;">WRITE A REVIEW</p>
       </div>
       <div class="mt-[2rem]">
@@ -324,6 +324,9 @@ import { reactive, onMounted } from 'vue'
 import request from '@/src/utils/request'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n();
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 const state = reactive({
   rate: 3,
   chainShow: false,
@@ -379,6 +382,16 @@ const tabList = [
 
 const tabHandle = (value) => {
   state.tabIndex = value;
+}
+
+const reviewHandle = () => {
+  router.push({
+    name: 'mbReview',
+    query: {
+      rate: state.reviewRate,
+      id: 1
+    }
+  })
 }
 
 const reviewList = [

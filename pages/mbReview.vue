@@ -21,11 +21,22 @@
         </span>
       </div>
       <van-field v-model="state.values" :autosize="{minHeight: 200}" type="textarea" class="flex-1" :border="false" placeholder="Write your review"/>
+      <div v-if="state.isVideo" class="h-[3.5rem] w-[5.5rem] rounded-[0.75rem] ml-[0.625rem] relative">
+        <video class="h-[3.5rem] w-[5.5rem] rounded-[0.75rem]" :src="state.allImgList[0]">
+        </video>
+        <img src="/images/close.svg" class="h-[1rem] w-[1rem] cursor-pointer absolute top-0 right-0" @click="handleRemove(item,0)" />
+      </div>
+      <div class="flex items-center overflow-x-scroll" v-else>
+        <div class="h-[3.5rem] w-[3.5rem] rounded-[0.75rem] ml-[0.625rem] relative mb-[1rem]" v-for="(item,index) in state.allImgList" :key="index" >
+          <img class="h-[3.5rem] w-[3.5rem] rounded-[0.75rem] relative" :src="item"/>
+          <img src="/images/close.svg" class="h-[1rem] w-[1rem] cursor-pointer absolute top-0 right-0" @click="handleRemove(item,index)" />
+        </div>
+      </div>
       <div class="flex justify-between bg-[#302D34] px-[1.5rem] w-full py-[1rem] border-t border-[#ffffff1c]">
         <div>
-          <van-uploader v-model="state.fileList">
+          <van-uploader v-model="state.fileList" accept="video/*,image/*" :max-count="state.maxCount" :preview-image="false" :before-read="beforeRead" :after-read="readHandle">
             <img src="/images/mobile/common/picture.svg" class="h-[1.5rem] w-[1.5rem]"/>
-            <p class="text-[0.75rem] text-[#ffffff56]" style="font-family: Hezaedrus-Regular;">Pictures and videos</p>
+            <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Pictures and videos</p>
           </van-uploader>
         </div>
         <div class="border border-[#ffffff1c] rounded-[0.75rem] h-[2.75rem] leading-[2.75rem] w-[5.625rem] text-center text-[#fff] submit text-[1rem] font-bold" style="font-family: Hezaedrus-bold;">
@@ -37,15 +48,26 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import axios from 'axios';
+import { reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n();
+import { useRouter, useRoute } from 'vue-router'
+const router = useRouter()
+const route = useRoute()
 
 const state = reactive({
   rate: 3,
   values: '',
-  fileList: []
+  fileList: [],
+  allImgList: [],
+  maxCount: 1,
+  isVideo: false
 })
+
+const backHandle = () => {
+  router.back()
+}
 
 const tagList = reactive([
   { name: "General", state: false },
@@ -57,8 +79,9 @@ const tagList = reactive([
   { name: "Other", state: false },
 ])
 
+
+
 const checkClick = (item) => {
-  console.log('aaaa',tagList)
   if (tagList.filter((ele) => ele.state).length < 3 || item.state) {
     item.state = !item.state;
   } else {
@@ -67,6 +90,59 @@ const checkClick = (item) => {
     })
   }
 };
+
+//上传前判断类型，推断最大数
+const beforeRead = (file) => {
+  if(state.allImgList.length != 0){
+    if(file.type == 'video/mp4'){
+      showToast({
+        message: t('videoAndImg')
+      })
+      return false;
+    }
+    return true
+  }else{
+    if(file.type == 'video/mp4'){
+      state.maxCount = 1
+      state.isVideo = true
+      return true;
+    }else{
+      state.maxCount = 8
+      return true;
+    }
+  }
+}
+
+//上传
+const readHandle = (file) => {
+  const forms = new FormData();
+  if(file.length && file.length >= 2){
+    file.forEach(element => {
+      forms.append('file',element.file)
+    });
+  }else{
+    forms.append('file',file.file);
+  }
+  axios.post('https://test.decheck.io/decheck-apis/plugin/decheck/api/project/apply/upload',forms,{headers:{
+    'Content-Type': 'multipart/form-data'
+  }}).then((res)=>{
+    state.allImgList.push(res.data.data.file.url)
+    console.log(state.allImgList)
+  })
+}
+
+const handleRemove = (item,index) => {
+  console.log(item,index,state.fileList,state.allImgList)
+  state.fileList.splice(index,1);
+  state.allImgList.splice(index,1);
+  state.isVideo = false
+}
+
+onMounted(()=>{
+  state.rate = route.query.rate ? Number(route.query.rate) : "1";
+})
+
+
 </script>
 
 <style scoped>
