@@ -24,7 +24,7 @@
 
 <script setup>
 import mbHeader from '@/src/components/mobile/mbHeader.vue'
-import panel from '~/src/components/mobile/dao/panel.vue.js'
+import panel from '@/src/components/mobile/dao/panel.vue'
 import { toRefs, onMounted, reactive } from 'vue';
 const route = useRoute();
 const { type } = route.query;
