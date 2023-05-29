@@ -133,26 +133,18 @@
         <div class="p-[1.5rem] text-[0.88rem]">
           <div class="h-[3.5rem] flex justify-between items-center border-b border-b-[#FFFFFF1C]">
             <p class="text-[#FFFFFFA8]">{{ t('price') }}</p>
-            <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-if="state.isE && state.nowPrice">
-              {{ countZeros(state.nowPrice) }}
-              <span>$0.0</span>
-              <sub>{{ state.priceFi }}</sub>
-              <span>{{ state.priceTw }}</span>
-              <span>{{ state.priceTh }}</span>
-            </p>
-            <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-else-if="state.nowPrice && !state.isE">
-              {{ countZeros(state.nowPrice) }}
-              <template v-if="state.isM">
-                <span>$0.0</span>
-                <sub>{{ state.priceFi }}</sub>
-                <span>{{ state.priceTw }}</span>
-                <span>{{ state.priceTh }}</span>
-              </template>
-              <template v-else>
-                <span>${{state.priceFi}}.</span>
-                <span>{{ state.priceTh }}</span>
-              </template>
-            </p>
+            <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-if="state.nowPrice">
+                  <template v-if="state.priceTw">
+                    <span>$</span>
+                    <span>{{ state.priceFi }}</span>
+                    <sub>{{ state.priceTw }}</sub>
+                    <span>{{ state.priceTh }}</span>
+                  </template>
+                  <template v-else>
+                    <span>${{ state.priceFi }}.</span>
+                    <span>{{ state.priceTh }}</span>
+                  </template>
+                </p>
             <p class="text-[#FFFFFF] text-[1.5rem] font-bold" v-else>-</p>
           </div>
           <div class="h-[3.5rem] flex justify-between items-center">
@@ -317,7 +309,10 @@ const getCheck = () => {
 const getPrice = () => {
   let nowChain = chainList.find(el => el.id == proStore.chainID)
   request.get(`/plugin/decheck/api/security/token/price/${nowChain.priceLabel}/${proStore.tokenAddr}`).then(res => {
-    state.nowPrice = res
+    if(res) {
+      state.nowPrice = res
+      countZeros(state.nowPrice)
+    }
   })
 }
 
@@ -359,31 +354,20 @@ const goToUrl = (val) => {
 }
 
 const countZeros = (num) => {
-  if (num) {
-    state.priceFi = "";
-    state.priceTw = ""
-    state.priceTh = "";
-    let reg = /\d(?:\.(\d*))?e([+-]\d+)/.exec(num);
-    //判断是否是科学计数法
-    if (reg == null) {
-      var str = num.toString();
-      var arr = str.split('.');
-      let regs = /\.0*|0+$/;
-      var zeross = num.toString().match(regs)[0].length - 1
-      if (zeross >= 7) {
-        state.isM = true;
-        state.priceFi = zeross;
-        state.priceTh = arr[1].substring(zeross, zeross + 4);
-      } else {
-        state.priceFi = arr[0];
-        state.priceTh = arr[1].substring(0, zeross + 4);
-      }
-    } else {
-      state.isE = true
-      state.priceFi = - reg[2] - 1;
-      state.priceTw = Math.abs(num.toString().split('.')[0])
-      state.priceTh = reg[1].substring(0, 3);
-    }
+  state.priceFi = "";
+  state.priceTw = ""
+  state.priceTh = "";
+  var str = num.toString();
+  var arr = str.split('.');
+  let regs = /\.0*|0+$/;
+  var zeross = num.toString().match(regs)[0].length - 1
+  if (zeross >= 7) {
+    state.priceFi = '0.0';
+    state.priceTw = zeross;
+    state.priceTh = arr[1].substring(zeross, zeross + 4);
+  } else {
+    state.priceFi = arr[0];
+    state.priceTh = arr[1].substring(0, zeross + 4);
   }
 }
 
