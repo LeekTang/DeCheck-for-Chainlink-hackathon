@@ -19,6 +19,7 @@
       </mbHeader>
       <mbHot></mbHot>
       <mbPor></mbPor>
+      <tabBar></tabBar>
     </div>
   </template>
 </template>
@@ -34,6 +35,7 @@ import BottomBar from '@/src/components/BottomBar.vue'
 import mbHeader from '@/src/components/mobile/mbHeader.vue'
 import mbHot from '@/src/components/mobile/mbHotProject.vue'
 import mbPor from '@/src/components/mobile/mbProject.vue'
+import tabBar from '@/src/components/mobile/mbTabBar.vue'
 
 const state = reactive({
   isMobile: false

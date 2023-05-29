@@ -34,11 +34,13 @@
                 </div>
             </div>
         </van-popup>
+        <tabBar></tabBar>
     </div>
 </template>
 <script setup>
 import { reactive, onMounted, toRefs } from 'vue';
 import mbHeader from '@/src/components/mobile/mbHeader.vue'
+import tabBar from '@/src/components/mobile/mbTabBar.vue'
 import card from '@/src/components/mobile/dao/card.vue'
 import { useRouter } from 'vue-router'
 
