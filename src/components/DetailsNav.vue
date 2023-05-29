@@ -63,23 +63,23 @@ const state = reactive({
 
 const options = [
   { value: "1", label: "Ethereum" },
-  { value: "10", label: "Optimism" },
-  { value: "25", label: "Cronos" },
   { value: "56", label: "BSC" },
-  { value: "66", label: "OKC" },
-  { value: "100", label: "Gnosis" },
-  { value: "128", label: "Heco" },
+  { value: "42161", label: "Arbitrum" },
   { value: "137", label: "Polygon" },
+  { value: "324", label: "zkSync Era" },
+  { value: "43114", label: "Avalanche" },
+  { value: "10", label: "Optimism" },
+  { value: "66", label: "OKC" },
+  { value: "128", label: "Heco" },
+  { value: "25", label: "Cronos" },
+  { value: "100", label: "Gnosis" },
   { value: "250", label: "Fantom" },
   { value: "321", label: "KCC" },
-  { value: "324", label: "zkSync Era" },
   { value: "10001", label: "ETHW" },
-  { value: "201022", label: "FON" },
-  { value: "42161", label: "Arbitrum" },
-  { value: "43114", label: "Avalanche" },
   { value: "59140", label: "Linea" },
   { value: "1666600000", label: "Harmony" },
   { value: "tron", label: "Tron" },
+  { value: "201022", label: "FON" },
 ]
 
 

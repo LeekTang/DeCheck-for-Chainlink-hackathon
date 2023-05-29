@@ -42,16 +42,16 @@
       </div>
       <div>
         <van-list v-model:loading="state.loading" :finished="state.finished" finished-text="没有更多了" @load="onLoad">
-          <div v-for="item in state.list" :key="item"
+          <div v-for="(item,index) in state.projectList" :key="index"
             class="flex h-[2.5rem] leading-[2.5rem] text-[#fff] text-[12px] mx-[1rem] border-b border-[#ffffff1c]"
             style="font-family: Hezaedrus-Medium;">
             <div class="w-[10rem] flex items-center">
-              <span class="w-[24px]" v-show="item < 100">{{ item }}</span>
+              <span class="w-[24px]" v-show="index < 100">{{ index + 1 }}</span>
               <div class="flex">
-                <img src="/images/defa.png" class="h-[24px] w-[24px] rounded-[8px] mr-[10px]" />
+                <img :src="item.logo" class="h-[1.6rem] w-[1.6rem] rounded-[8px] mr-[10px]" />
                 <div class="h-[24px] flex flex-col justify-between">
-                  <span class="text-[12px] h-[12px] leading-[12px]">TTF</span>
-                  <el-rate disabled v-model="state.rate" />
+                  <van-text-ellipsis :content="item.name" class="text-[12px] h-[12px] mb-[0.4rem] leading-[12px]"></van-text-ellipsis>
+                  <el-rate disabled v-model="item.score" />
                 </div>
               </div>
             </div>
@@ -66,15 +66,17 @@
 
 <script setup>
 import { reactive, onMounted } from 'vue'
+import request from '@/src/utils/request'
 
 const state = reactive({
-  value1: 0,
   loading: false,
   finished: false,
-  list: [],
-  rate: 3,
+  projectList: [],
   screen: false,
-  filterValue: 0
+  filterValue: 0,
+  page:1,
+  pageSize: 20,
+  searchInput: ""
 })
 
 const filter = [
@@ -84,15 +86,35 @@ const filter = [
 ]
 
 const onLoad = () => {
-  setTimeout(() => {
-    for (let i = 0; i < 10; i++) {
-      state.list.push(state.list.length + 1);
-    }
+  getProList();
+
+  // setTimeout(() => {
+  //   for (let i = 0; i < 10; i++) {
+  //     state.list.push(state.list.length + 1);
+  //   }
+  //   state.loading = false
+  //   if (state.list.length > 110) {
+  //     state.finished = true
+  //   }
+  // }, 1000);
+}
+
+const getProList = () => {
+  request({ url: `/plugin/decheck/api/project/page?page=${state.page}&pageSize=${state.pageSize}&keyword=${state.searchInput}`,method : 'get'}).then((res) => {
     state.loading = false
-    if (state.list.length > 110) {
+    state.page = state.page + 1;
+    if(res.list == null){
+      console.log('aaaa')
       state.finished = true
+    }else{
+      state.projectList = state.projectList.concat(res.list)
+      state.projectList.forEach(ele => {
+        ele.score = Number(ele.score).toFixed(0)
+      });
     }
-  }, 1000);
+    
+    
+  })
 }
 
 const closeFilter = () => {

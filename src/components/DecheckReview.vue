@@ -371,24 +371,24 @@ const submitClick = () => {
         visible: true,
         attachment: state.fileList,
       }
-      // request({ url: '/plugin/decheck/api/project/review/add', data, method: 'post' }).then(res => {
-      //   if (res != null) {
-      //     ElMessage({
-      //       message: t('submitSuccess'),
-      //       type: 'success',
-      //       offset: 120
-      //     })
-      //     checkList.forEach(el => {
-      //       el.state = false
-      //     })
-      //     state.rateValue = 0
-      //     state.textarea = ""
-      //     state.reviewShow = false;
-      //     state.fileList = [];
-      //     state.elUpList = [];
-      //     projectInfo();
-      //   }
-      // })
+      request({ url: '/plugin/decheck/api/project/review/add', data, method: 'post' }).then(res => {
+        if (res != null) {
+          ElMessage({
+            message: t('submitSuccess'),
+            type: 'success',
+            offset: 120
+          })
+          checkList.forEach(el => {
+            el.state = false
+          })
+          state.rateValue = 0
+          state.textarea = ""
+          state.reviewShow = false;
+          state.fileList = [];
+          state.elUpList = [];
+          projectInfo();
+        }
+      })
     }
 }
 
