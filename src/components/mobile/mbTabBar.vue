@@ -1,6 +1,6 @@
 <template>
     <van-sticky position="bottom">
-        <van-tabbar route active-color="white" inactive-color="rgba(255, 255, 255, 0.6)">
+        <van-tabbar route :border="false" active-color="white" inactive-color="rgba(255, 255, 255, 0.6)">
             <van-tabbar-item replace to="/">Explorer
                 <template #icon="props">
                     <img :src="props.active ? icon.explorerActive : icon.explorer" />
@@ -16,7 +16,7 @@
                     <img :src="props.active ? icon.daoActive : icon.dao" />
                 </template>
             </van-tabbar-item>
-            <van-tabbar-item replace to="/mbReviews">Reviews
+            <van-tabbar-item replace to="/mbProfile">Reviews
                 <template #icon="props">
                     <img :src="props.active ? icon.reviewActive : icon.review" />
                 </template>
