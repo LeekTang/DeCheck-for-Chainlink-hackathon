@@ -16,7 +16,7 @@
                     <img :src="props.active ? icon.daoActive : icon.dao" />
                 </template>
             </van-tabbar-item>
-            <van-tabbar-item replace to="/mbProfile">Reviews
+            <van-tabbar-item replace to="/mbProfile">My Profile
                 <template #icon="props">
                     <img :src="props.active ? icon.reviewActive : icon.review" />
                 </template>
