@@ -1,11 +1,15 @@
 <template>
   <div class="flex justify-between items-center p-[1rem]">
-    <div class="text-[1rem] text-[#fff]" style="font-family:Hezaedrus-Bold"><slot name="left"></slot></div>
-    <div class="flex flex-row">
+    <div class="text-[1rem] text-[#fff]" style="font-family:Hezaedrus-Bold">
+      <slot name="left"></slot>
+    </div>
+    <slot v-if="showRight" name="right"></slot>
+    <div v-else class="flex flex-row">
       <div class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c]" @click="changeLanguage">
         <img src="/images/mobile/home/net.svg" class="h-[18px] w-[18px]" />
       </div>
-      <NuxtLink to="/mbSearch" class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c] ml-[1rem]">
+      <NuxtLink to="/mbSearch"
+        class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c] ml-[1rem]">
         <img src="/images/mobile/home/search.svg" class="h-[18px] w-[18px]" />
       </NuxtLink>
       <div class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c] ml-[1rem]">
@@ -37,7 +41,17 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
+import { useSlots } from "vue";
+
+const showRight = ref(false);
+const slotRight = !!useSlots().right;
+
+onMounted(() => {
+  if (slotRight) {
+    showRight.value = true;
+  }
+})
 
 const state = reactive({
   screen: false,

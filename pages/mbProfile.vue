@@ -39,32 +39,53 @@
                     </div>
                 </div>
             </div>
-            <h3 class="text-textGray text-[14px]">MY REVIEWS (25)</h3>
+            <h3 class="text-textGray text-[14px]">MY REVIEWS ({{ proNumber }})</h3>
             <div class="flex-col text-[white] py-[16px]">
-                <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c]">
-                    <div class="flex justify-between pb-[5px]">
-                        <div class="text-[16px]">PROJECT NAME</div>
-                        <span class="text-[#ffffff6c] text-[12px]" style="font-family: Hezaedrus-regular;">2023-06-23</span>
+                <van-skeleton title avatar :row="3" :loading="loading">
+                    <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c]"
+                        @click="() => checkDetail(1)">
+                        <div class="flex justify-between pb-[5px]">
+                            <div class="text-[16px]">PROJECT NAME</div>
+                            <span class="text-[#ffffff6c] text-[12px]"
+                                style="font-family: Hezaedrus-regular;">2023-06-23</span>
+                        </div>
+                        <div>
+                            <el-rate v-model="rate" />
+                        </div>
+                        <article class="text-[12px] line-clamp-3" style="font-family: Hezaedrus-regular;">
+                            Within our ventures, the expansion circuit of Ethereum is inevitable. It is just a matter of how
+                            to
+                            make decisions on different projects with different...
+                        </article>
                     </div>
-                    <div>
-                        <el-rate disabled v-model="state.rate" />
-                    </div>
-                    <article class="text-[12px] line-clamp-3" style="font-family: Hezaedrus-regular;">
-                        Within our ventures, the expansion circuit of Ethereum is inevitable. It is just a matter of how to
-                        make decisions on different projects with different...
-                    </article>
-                </div>
+                </van-skeleton>
             </div>
         </div>
         <tabBar></tabBar>
     </div>
 </template>     
 <script setup>
-import { reactive } from 'vue';
-import mbHeader from '@/src/components/mobile/mbHeader.vue'
-import tabBar from '@/src/components/mobile/mbTabBar.vue'
+import { reactive, toRefs, onMounted } from 'vue';
+import mbHeader from '@/src/components/mobile/mbHeader.vue';
+import tabBar from '@/src/components/mobile/mbTabBar.vue';
+import { useRouter } from 'vue-router'
+const router = useRouter();
+
 const state = reactive({
-    rate: 3
+    rate: 3,
+    loading: true,
+    proNumber: 20,
 })
+
+onMounted(() => {
+    state.loading = false;
+})
+const checkDetail = (param) => {
+    router.push({
+        name: 'mbComment',
+        query: { id: 1 }
+    })
+}
+const { rate, loading, proNumber } = toRefs(state)
 </script>
 <style scoped></style>
