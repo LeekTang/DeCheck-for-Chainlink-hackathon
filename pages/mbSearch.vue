@@ -12,10 +12,10 @@
     </div>
     <!-- 搜索推荐 -->
     <template v-if="state.showBlur">
-      <div v-for="item in 9" :key="item" @click="projectHandle"
+      <div v-for="item in state.recommend" :key="item" @click="projectHandle(item,true)"
         class="h-[48px] pl-[16px] flex items-center border-b border-[#ffffff1c] bg-[#1B1A1D]">
         <img src="/images/mobile/home/sm-search.svg" class="h-[16px] w-[16px] mr-[8px]" />
-        <p class="text-[#ffffff] text-[14px]" style="font-family: Hezaedrus-Regular;">OpenSea</p>
+        <p class="text-[#ffffff] text-[14px]" style="font-family: Hezaedrus-Regular;">{{item.name}}</p>
       </div>
     </template>
     <!-- 历史记录 -->
@@ -25,7 +25,7 @@
         <img src="/images/mobile/common/trash.svg" class="h-[1rem] w-[1rem]" @click="deleteShow" />
       </div>
       <div class="mt-[1.5rem] h-[2rem] px-[1rem] flex overflow-x-scroll">
-        <span v-for="item in state.recordList" :key="item"
+        <span v-for="item in state.recordList" :key="item" @click="historyClick(item)"
           class="px-[10px] flex-shrink-0 inline-block h-[2rem] leading-[2rem] bg-[#302D34] text-[12px] text-[#fff] rounded-full mr-[1rem]"
           style="font-family: Hezaedrus-Regular;">{{ item }}</span>
       </div>
@@ -61,6 +61,7 @@
 
 <script setup>
 import { reactive } from 'vue'
+import request from '@/src/utils/request'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
@@ -69,11 +70,16 @@ const state = reactive({
   rate: 3,
   showBlur: false,
   deletePop: false,
-  recordList: []
+  recordList: [],
+  recommend: []
 })
 
 const updateHandle = (e) => {
   if (e) {
+    request.get(`/plugin/decheck/api/project/page?page=1&pageSize=10&keyword=${e}`).then((res) => {
+      console.log(res.list)
+      state.recommend = res.list
+    })
     state.showBlur = true
   } else {
     state.showBlur = false
@@ -86,6 +92,11 @@ const searchHandle = () => {
     state.inputValue = ""
     state.showBlur = false
   }
+}
+
+const historyClick = (item) => {
+  state.inputValue = item
+  updateHandle(item)
 }
 
 const deleteShow = () => {
@@ -105,9 +116,15 @@ const backHandle = () => {
   router.back()
 }
 
-const projectHandle = () => {
+const projectHandle = (item,ishistory) => {
+  if(ishistory){
+    state.recordList.unshift(item.name)
+  }
   router.push({
-    name: 'mbProjectDetail'
+    name: 'mbProjectDetail',
+    query: {
+      id: item.id
+    }
   })
 }
 </script>

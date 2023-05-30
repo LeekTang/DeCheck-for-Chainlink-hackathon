@@ -8,7 +8,7 @@
       <NuxtLink to="/mbSearch" class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c] ml-[1rem]">
         <img src="/images/mobile/home/search.svg" class="h-[18px] w-[18px]" />
       </NuxtLink>
-      <div class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c] ml-[1rem]">
+      <div class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c] ml-[1rem]" @click="connectClick">
         <img src="/images/mobile/home/mine.svg" class="h-[18px] w-[18px]" />
       </div>
     </div>
@@ -38,6 +38,11 @@
 
 <script setup>
 import { reactive } from 'vue'
+import web3js from '@/src/utils/link'
+import request from '@/src/utils/request'
+import { userStore } from '@/src/stores/user'
+const store = userStore()
+const runConfig = useRuntimeConfig()
 
 const state = reactive({
   screen: false,
@@ -55,6 +60,34 @@ const language = [
 
 const closeFilter = () => {
   state.screen = false
+}
+
+const connectClick = () => {
+  web3js.connect().then((res) => {
+		if(res == undefined) {return;}
+    web3js.change().then(chanres => {
+      if(chanres == true){
+        goSignOut()
+      }
+    })
+		web3js.getSign().then(signres=>{
+      if(signres.signMessage){
+        let data = {
+          aggregateType: 7,
+          appId: runConfig.public.VITE_LOGIN_ID,
+          authId: signres.account,
+          strSign: signres.signMessage,
+          type: 4,
+          data: runConfig.public.VITE_SIGN_TEXT
+        }
+        request({ url: `/center/apis/user/user-login/login`,method: 'post', data: data, baseURL: runConfig.public.VITE_LOGIN_URL}).then(loginres => {
+          localStorage.setItem('token',loginres.tokenValue)
+          store.userInfo = { account: signres.account}
+          store.isSign = true;
+        })
+      }
+    })
+	})
 }
 </script>
 

@@ -38,10 +38,6 @@ const getHotProject = () => {
     observer: true,
     observeParents: true,
     spaceBetween: 16,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false
-    }
   })
   request.get(`/plugin/decheck/api/project/hot`).then((res) => {
     state.loading = false

@@ -42,7 +42,7 @@
       </div>
       <div>
         <van-list v-model:loading="state.loading" :finished="state.finished" finished-text="没有更多了" @load="onLoad">
-          <div v-for="(item,index) in state.projectList" :key="index"
+          <div v-for="(item,index) in state.projectList" :key="index" @click="proClick(item.id)"
             class="flex h-[2.5rem] leading-[2.5rem] text-[#fff] text-[12px] mx-[1rem] border-b border-[#ffffff1c]"
             style="font-family: Hezaedrus-Medium;">
             <div class="w-[10rem] flex items-center">
@@ -67,6 +67,8 @@
 <script setup>
 import { reactive, onMounted } from 'vue'
 import request from '@/src/utils/request'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const state = reactive({
   loading: false,
@@ -87,16 +89,6 @@ const filter = [
 
 const onLoad = () => {
   getProList();
-
-  // setTimeout(() => {
-  //   for (let i = 0; i < 10; i++) {
-  //     state.list.push(state.list.length + 1);
-  //   }
-  //   state.loading = false
-  //   if (state.list.length > 110) {
-  //     state.finished = true
-  //   }
-  // }, 1000);
 }
 
 const getProList = () => {
@@ -104,7 +96,6 @@ const getProList = () => {
     state.loading = false
     state.page = state.page + 1;
     if(res.list == null){
-      console.log('aaaa')
       state.finished = true
     }else{
       state.projectList = state.projectList.concat(res.list)
@@ -112,8 +103,15 @@ const getProList = () => {
         ele.score = Number(ele.score).toFixed(0)
       });
     }
-    
-    
+  })
+}
+
+const proClick = (id) => {
+  router.push({
+    name: 'mbProjectDetail',
+    query: {
+      id: id
+    }
   })
 }
 
