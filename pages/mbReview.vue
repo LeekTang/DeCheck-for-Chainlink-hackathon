@@ -6,7 +6,7 @@
     <div class="flex px-[1rem]">
       <img :src="state.projectLogo" class="h-[2.5rem] w-[2.5rem] rounded-[0.5rem] mr-[0.625rem]" />
       <div>
-        <p class="text-[1rem] text-[#fff] font-medium" style="font-family: Hezaedrus-Medium;">{{state.projectName}}</p>
+        <p class="text-[1rem] text-[#fff] font-medium" style="font-family: Hezaedrus-Medium;">{{ state.projectName }}</p>
         <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">RATE THIS ITEM</p>
       </div>
     </div>
@@ -75,7 +75,8 @@ const state = reactive({
   fileList: [],
   allImgList: [],
   maxCount: 1,
-  isVideo: false
+  isVideo: false,
+  reviewID: ""
 })
 
 const backHandle = () => {
@@ -84,7 +85,7 @@ const backHandle = () => {
 
 const checkList = reactive([
   { name: "General", state: false },
-  { name: "Contract", state: true },
+  { name: "Contract", state: false },
   { name: "Tokenomics", state: false },
   { name: "Team", state: false },
   { name: "BUG", state: false },
@@ -176,8 +177,15 @@ const submitClick = () => {
     userId: store.userInfo.account,
     visible: true,
     attachment: state.allImgList,
+    id: state.reviewID
   }
-  request({ url: '/plugin/decheck/api/project/review/add', data, method: 'post' }).then(res => {
+  let url;
+  if (state.reviewID) {
+    url = '/plugin/decheck/api/project/review/update'
+  } else {
+    url = '/plugin/decheck/api/project/review/add'
+  }
+  request({ url: url, data, method: 'post' }).then(res => {
     if (res != null) {
       showToast({
         message: t('submitSuccess'),
@@ -188,6 +196,29 @@ const submitClick = () => {
   })
 }
 
+const getDetail = () => {
+  request.get(`/plugin/decheck/api/project/review/detail/${state.reviewID}`).then(res => {
+    console.log(res)
+    state.rate = res.score
+    state.values = res.content
+    state.chainID = res.chainId
+    state.tokenAddr = res.tokenAddr
+    state.allImgList = state.fileList = res.attachment
+    checkList.forEach(item => {
+      res.tags.forEach(resItem => {
+        if (item.name == resItem) {
+          item.state = true
+        }
+      })
+    })
+    request.get(`/plugin/decheck/api/project/detail/${res.projectId}`).then(ress => {
+      state.projectLogo = ress.logo;
+      state.projectName = ress.name;
+      state.projectID = ress.id;
+    })
+  })
+}
+
 onMounted(() => {
   state.rate = route.query.rate ? Number(route.query.rate) : "1";
   state.projectID = route.query.id ? route.query.id : "";
@@ -195,6 +226,10 @@ onMounted(() => {
   state.projectLogo = route.query.logo ? route.query.logo : "";
   state.chainID = route.query.chainID ? route.query.chainID : "";
   state.tokenAddr = route.query.tokenAddr ? route.query.tokenAddr : "";
+  state.reviewID = route.query.reviewID ? route.query.reviewID : "";
+  if (state.reviewID) {
+    getDetail()
+  }
 })
 
 
@@ -221,4 +256,5 @@ onMounted(() => {
 
 .submit {
   background: linear-gradient(217.97deg, #129CC8 13.89%, #56269B 77.75%);
-}</style>
+}
+</style>

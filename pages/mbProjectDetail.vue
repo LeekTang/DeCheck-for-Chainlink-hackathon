@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between h-[56px]">
       <img class="h-[24px] w-[24px]" src="/images/mobile/common/back.svg" @click="backHandle" />
       <div class="flex items-center">
-        <img class="h-[24px] w-[24px] rounded-[8px] mr-[8px]" :src="state.projectDetail.logo" />
+        <img class="h-[24px] w-[24px] rounded-[8px] mr-[8px]" :src="state.projectDetail.logo" @error="imgError" />
         <p class="text-[18px] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">{{
           state.projectDetail.name }}</p>
       </div>
@@ -50,9 +50,11 @@
     <div class="flex items-center justify-between mt-[10px]">
       <div @click="collect"
         class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px]">
-        <img :src="state.projectDetail.collected == 1 ? '/images/mobile/project/collected.svg' : '/images/mobile/project/collect-not.svg'"
+        <img
+          :src="state.projectDetail.collected == 1 ? '/images/mobile/project/collected.svg' : '/images/mobile/project/collect-not.svg'"
           class="h-[24px] w-[24px]" />
-        <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">{{ state.projectDetail.collected == 1 ? 'Collected' :
+        <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">{{ state.projectDetail.collected == 1 ?
+          'Collected' :
           'Collect' }}</p>
       </div>
       <div @click="state.linkShow = true"
@@ -84,7 +86,18 @@
       </span>
     </div>
     <div class="text-[#fff] mt-[1rem]" v-if="state.tabIndex == 1">
-      <div class="p-[16px] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem]">
+      <div class="p-[16px] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem]" v-if="state.ownReview.length > 0">
+        <div class="flex justify-between items-start">
+          <p class="text-[16px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">MY COMMENT</p>
+          <p class="leading-[0.5rem]">...</p>
+        </div>
+        <van-rate v-model="state.ownReview.score" :size="14" color="#FFB524" class="my-[0.75rem]"/>
+        <article class="text-[12px] line-clamp-3 whitespace-pre-wrap" style="font-family: Hezaedrus-regular;"
+          v-html="state.ownReview.content">
+        </article>
+        <p class="text-[14px] text-[#9044FF] mt-[0.75rem]" style="font-family: Hezaedrus-Bold;">EDIT COMMNET</p>
+      </div>
+      <div class="p-[16px] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem]" v-else>
         <p class="text-[16px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">RATE THIS ITEM</p>
         <van-rate v-model="state.reviewRate" :size="30" color="#FFB524" class="justify-between my-[1rem]"
           @click="reviewHandle" />
@@ -162,7 +175,8 @@
           <div class="text-[0.75rem] text-[#ffffff] flex " style="font-family: Hezaedrus-Medium;"
             v-if="state.checkInfo.creator_address">
             <p>{{ abbr(state.checkInfo.creator_address) }}</p>
-            <img src="/images/mobile/common/copy.svg" class="h-[16px] w-[16px] ml-[0.5rem]"  @click="copyClick(state.checkInfo.creator_address)"/>
+            <img src="/images/mobile/common/copy.svg" class="h-[16px] w-[16px] ml-[0.5rem]"
+              @click="copyClick(state.checkInfo.creator_address)" />
           </div>
         </div>
         <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
@@ -170,7 +184,8 @@
           <div class="text-[0.75rem] text-[#ffffff] flex " style="font-family: Hezaedrus-Medium;"
             v-if="state.checkInfo.owner_address">
             <p>{{ abbr(state.checkInfo.owner_address) }}</p>
-            <img src="/images/mobile/common/copy.svg" class="h-[16px] w-[16px] ml-[0.5rem]" @click="copyClick(state.checkInfo.owner_address)" />
+            <img src="/images/mobile/common/copy.svg" class="h-[16px] w-[16px] ml-[0.5rem]"
+              @click="copyClick(state.checkInfo.owner_address)" />
           </div>
         </div>
         <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
@@ -202,7 +217,8 @@
           </div>
           <p class="text-[#11B466]">{{ state.holdPer + '%' }}</p>
         </div>
-        <van-progress :percentage="state.holdPer" stroke-width="8" color="#11B466" :show-pivot="false" class="mt-[0.625rem]" />
+        <van-progress :percentage="state.holdPer" stroke-width="8" color="#11B466" :show-pivot="false"
+          class="mt-[0.625rem]" />
         <div class="mt-[1.5rem]">
           <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">Top 10 Holders Ratio
           </p>
@@ -224,7 +240,8 @@
                   </div>
                 </div>
               </div>
-              <p class="text-[0.75rem] text-[#11B466] font-bold" style="font-family: Hezaedrus-Bold;">({{ tosix(item.percent) }})</p>
+              <p class="text-[0.75rem] text-[#11B466] font-bold" style="font-family: Hezaedrus-Bold;">({{
+                tosix(item.percent) }})</p>
             </div>
           </template>
           <div v-if="state.checkInfo.holders.length > 3" @click="showMore(1)"
@@ -235,18 +252,20 @@
         </div>
       </div>
       <!-- pool -->
-      <div class="border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem] p-[1rem] mt-[1rem]">
+      <div class="border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem] p-[1rem] mt-[1rem]"
+        v-if="state.checkInfo.lp_holders">
         <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">LP Pool Info</p>
         <div class="flex items-center justify-between text-[1.125rem] font-bold mt-[1rem]"
           style="font-family: Hezaedrus-Bold;">
           <div class="text-[#ffffff]">
-            <p>{{ state.checkInfo.lp_holder_count}}</p>
+            <p>{{ state.checkInfo.lp_holder_count }}</p>
             <p class="text-[0.75rem] text-[#ffffffa8] leading-[0.75rem] font-normal"
               style="font-family: Hezaedrus-Regular;">Token Holders </p>
           </div>
-          <p class="text-[#9044FF]">{{ state.poolPer + '%'}}</p>
+          <p class="text-[#9044FF]">{{ state.poolPer + '%' }}</p>
         </div>
-        <van-progress :percentage="state.poolPer" stroke-width="8" color="#9044FF" :show-pivot="false" class="mt-[0.625rem]" />
+        <van-progress :percentage="state.poolPer" stroke-width="8" color="#9044FF" :show-pivot="false"
+          class="mt-[0.625rem]" />
         <div class="mt-[1.5rem]">
           <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">Top 10 Holders Ratio
           </p>
@@ -262,12 +281,14 @@
                 <div class="text-[0.75rem] font-normal" style="font-family: Hezaedrus-Regular;">
                   <p class="text-[#ffffffa8]" v-if="item.address">{{ abbr(item.address) }}</p>
                   <div class="flex items-center">
-                    <p class="text-[#fff]">{{ toShort(item.balance,2) }}</p>
-                    <img src="/images/contract_icon.svg" v-if="item.is_contract == 1" class="h-[1rem] w-[1rem] ml-[0.625rem]" />
+                    <p class="text-[#fff]">{{ toShort(item.balance, 2) }}</p>
+                    <img src="/images/contract_icon.svg" v-if="item.is_contract == 1"
+                      class="h-[1rem] w-[1rem] ml-[0.625rem]" />
                   </div>
                 </div>
               </div>
-              <p class="text-[0.75rem] text-[#9044FF] font-bold" style="font-family: Hezaedrus-Bold;">({{tosix(item.percent) }})</p>
+              <p class="text-[0.75rem] text-[#9044FF] font-bold" style="font-family: Hezaedrus-Bold;">
+                ({{ tosix(item.percent) }})</p>
             </div>
           </template>
           <div v-if="state.checkInfo.lp_holders.length > 3" @click="showMore(2)"
@@ -332,13 +353,15 @@
 <script setup>
 import { reactive, onMounted } from 'vue'
 import request from '@/src/utils/request'
-import { abbr, copyToClipBoard, toShort, tosix, matchType, timestampToTime } from '@/src/utils/utils'
+import { abbr, imgError, copyToClipBoard, toShort, tosix, matchType, timestampToTime } from '@/src/utils/utils'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n();
 import { showImagePreview } from 'vant'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
+import { userStore } from '@/src/stores/user'
+const store = userStore()
 
 const state = reactive({
   chainShow: false,
@@ -359,7 +382,8 @@ const state = reactive({
   commentList: [],
   checkInfo: [],
   holdPer: '',           //hold百分比
-  poolPer: ''             //pool百分比
+  poolPer: '',           //pool百分比
+  ownReview: []
 })
 
 const options = [
@@ -416,7 +440,7 @@ const selectChain = (e) => {
 
 const collect = () => {
   request.get(`/plugin/decheck/api/user/collects/update/${state.projectID}`).then((res) => {
-    state.projectDetail.collected == 1 ? state.projectDetail.collected = 0 : state.projectDetail.collected = 1 
+    state.projectDetail.collected == 1 ? state.projectDetail.collected = 0 : state.projectDetail.collected = 1
   })
 }
 
@@ -568,6 +592,18 @@ const getProject = () => {
       })
     }
     getCheck()
+    if (store.isSign) {
+      getOwnReview()
+    }
+  })
+}
+
+const getOwnReview = () => {
+  request.get(`/plugin/decheck/api/user/review/${state.projectID}/${state.chainAddress}/helpful-top`).then(res => {
+    console.log(res)
+    if(res){
+      state.ownReview = res
+    }
   })
 }
 

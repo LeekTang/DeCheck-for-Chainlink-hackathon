@@ -1,11 +1,12 @@
 <template>
-    <div class="bg-[#070312] min-h-screen px-[11px] pb-[60px]">
+    <div class="bg-[#070312] min-h-screen pb-[60px]">
         <mbHeader>
             <template v-slot:left>
                 EXPLORER
             </template>
         </mbHeader>
-        <div class="pt-[16px] min-h-screen overflow-y-auto overscroll-y-contain" style="font-family: Hezaedrus-Medium;">
+        <div class="pt-[16px] px-[11px] min-h-screen overflow-y-auto overscroll-y-contain"
+            style="font-family: Hezaedrus-Medium;">
             <div class="flex flex-wrap  w-[100%]">
                 <div class="p-[5px] w-[50%]" v-for="({ content, pic, btnText, callback, disable }, index) in list"
                     :key="index">
@@ -21,15 +22,26 @@
                 </article>
             </div>
         </div>
-        <van-popup v-model:show="popup" class="bg-[#1B1A1D]" position="bottom" :style="{ height: 'auto' }">
-            <div class="bg-[#1B1A1D] h-[100%] p-[24px] pb-[60px] text-center" style="font-family: Hezaedrus-Medium;">
-                <img class="object-cover w-[100%]" :src="popupData.pic" alt="">
+        <van-dialog v-model:show="state.soonShow" :showConfirmButton="false">
+            <div class="w-[312px] p-[24px]">
+                <div class="text-[16px] text-[#fff]" style="font-family: Hezaedrus-bold;">COMMING SOON</div>
+                <div class="bg-[#FFFFFF] h-[40px] leading-[40px] rounded-[12px] mt-[24px] text-center font-medium"
+                    style="font-family: Hezaedrus-Bold;" @click="state.soonShow = false">OKEY</div>
+            </div>
+        </van-dialog>
+        <van-popup v-model:show="popup" class="bg-[#1B1A1D]" position="bottom">
+            <div class="bg-[#1B1A1D] p-[24px] text-center rounded-[12px]" style="font-family: Hezaedrus-Medium;">
+                <img class="h-[19.5rem] w-[19.5rem]" :src="popupData.pic" alt="">
                 <h4 class="text-[white] text-[18px] mt-[24px] mb-[10px]">{{ popupData.title }}</h4>
-                <article class="text-textGray text-[14px] pb-[10px]" style="font-family: Hezaedrus-regular;">
-                    {{ popupData.content }}<br />
-                    <span class="text-[white] text-[12px] pt-[10px] mb-[32px]">Mozilla Firefox is an open-source</span>
-                </article>
-                <div class="h-[32px] text-[16px] bg-[white] rounded-[12px] leading-[32px]" @click="popupData.popAction">
+                <p class="text-textGray text-[14px] pb-[10px] leading-[18px]" style="font-family: Hezaedrus-regular;">
+                    {{ popupData.tips1 }}
+                </p>
+                <p class="text-textGray text-[14px] leading-[18px]" style="font-family: Hezaedrus-regular;">
+                    {{ popupData.tips2 }}
+                </p>
+                <p class="text-[white] text-[12px] pt-[10px] mb-[32px]">{{ popupData.btips }}</p>
+                <div :class="`${popupData.bg ? 'bg-[#FFFFFF54] text-[#FFFFFFA8' : 'bg-[white]'} h-[32px] text-[16px]  rounded-[12px] leading-[32px]`"
+                    @click="popupData.popAction">
                     {{ popupData.popBtnText }}
                 </div>
             </div>
@@ -51,68 +63,92 @@ const activePopup = (index) => {
 };
 
 const reviewPopAction = () => {
-    const { disable, title } = state.popupData;
-    console.log('popupData', popupData)
-    if (!disable) {
-        router.push({
-            name: "mbDaoApply",
-            query: { type: title }
-        })
+    const { disable, title, bg } = state.popupData;
+    if (!disable && !bg) {
+        window.open('https://zealy.io/c/decheckdao/invite/EZ4ltKmkbuJ7_zvKkXptZ', '_blank')
+        // router.push({
+        //     name: "mbDaoApply",
+        //     query: { type: title }
+        // })
+    } else {
+        state.soonShow = true
     }
 }
 
 const state = reactive({
+    soonShow: false,
     popup: false,
     popupData: {
-        title: "AUDITOR",
-        content: 'Become a Reviewer by airdrop mission Become a Reviewer by airdrop mission',
+        title: "Reviewer",
+        content: 'Lets make things better!',
         btnText: 'DETAILS',
         popBtnText: 'GO',
         pic: '/images/mobile/dao/auditor.svg',
         disable: false,
         callback: activePopup,
         popAction: reviewPopAction,
+        bg: true
     },
     list: [{
-        title: "AUDITOR",
-        content: 'Become a Reviewer by airdrop mission Become a Reviewer by airdrop mission',
+        title: "REVIEWER",
+        content: 'Lets make things better!',
+        tips1: 'The reviewer is the core identity of decheck DAO and also the foundation of DeCheck DAO DID.',
+        tips2: 'Reviewer NFT is the only role identity token for reviewers in the DeCheck DAO.',
+        btips: 'Become a Reviewer by airdrop mission',
         btnText: 'DETAILS',
         popBtnText: 'GO',
+        pic: '/images/mobile/dao/reviewer.svg',
+        disable: false,
+        callback: activePopup,
+        popAction: reviewPopAction,
+        bg: false
+    }, {
+        title: "Auditor",
+        content: 'Code is law!',
+        tips1: 'DeCheck DAO welcomes people with coding skills to apply to become our Auditor roles.',
+        tips2: 'Harvest DeCheck Treasury incentives in the DeCheck DAO through your coding abilities.',
+        btips: 'Become a Auditor by DID application',
+        btnText: 'DETAILS',
+        popBtnText: 'COMMING SOON',
         pic: '/images/mobile/dao/auditor.svg',
         disable: false,
         callback: activePopup,
         popAction: reviewPopAction,
-    }, {
-        title: "PRODUCER",
-        content: 'Become a Reviewer by airdrop mission Become a Reviewer by airdrop mission',
-        btnText: 'DETAILS',
-        popBtnText: 'APPLY',
-        pic: '/images/mobile/dao/producer.svg',
-        disable: false,
-        callback: activePopup,
-        popAction: reviewPopAction,
+        bg: true
     }, {
         title: "RESEARCHER",
-        content: 'Become a Reviewer by airdrop mission Become a Reviewer by airdrop mission',
+        content: 'Next big thing!',
+        tips1: 'DeCheck DAO welcomes people with coding skills to apply to become our Auditor roles.',
+        tips2: 'Harvest DeCheck Treasury incentives in the DeCheck DAO through your coding abilities.',
+        btips: 'Become a Auditor by DID application',
         btnText: 'DETAILS',
         popBtnText: 'COMMING SOON',
         pic: '/images/mobile/dao/researcher.svg',
         disable: false,
         callback: activePopup,
         popAction: reviewPopAction,
+        bg: true
     }, {
-        title: "REVIEWER",
-        content: 'Become a Reviewer by airdrop mission Become a Reviewer by airdrop mission',
+        title: "PRODUCER",
+        content: 'Craftsmanship!',
+        tips1: 'DeCheck DAO welcomes people with coding skills to apply to become our Auditor roles.',
+        tips2: 'Harvest DeCheck Treasury incentives in the DeCheck DAO through your coding abilities.',
+        btips: 'Become a Auditor by DID application',
         btnText: 'DETAILS',
         popBtnText: 'COMMING SOON',
-        pic: '/images/mobile/dao/reviewer.svg',
+        pic: '/images/mobile/dao/producer.svg',
         disable: false,
         callback: activePopup,
         popAction: reviewPopAction,
+        bg: true
     }]
 })
 
 const { list, popup, popupData } = toRefs(state);
 
 </script>
-<style scoped></style>
+<style scoped>
+:deep(.van-popup) {
+    background: #302D34;
+    border-radius: 12px;
+}</style>

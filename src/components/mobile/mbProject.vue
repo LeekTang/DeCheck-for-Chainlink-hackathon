@@ -3,13 +3,13 @@
     <div class="text-[1rem] text-[#ffffffa8] px-[1rem]" style="font-family: Hezaedrus-Bold;">PROJECTS</div>
     <div class="mt-[1rem] flex px-[1rem] text-[14px]" style="font-family: Hezaedrus-Medium;">
       <div
-        class="h-[2rem] leading-[2rem] px-[1rem]  text-center rounded-[12px] border border-[#ffffff1c] bg-[#fff] mr-[1rem] flex items-center"
-        @click="state.screen = !state.screen">
+        :class="`${ state.tabIndex == 1 ? 'bg-[#fff]' : 'bg-[#1B1A1D] text-[#ffffffa8]'} h-[2rem] leading-[2rem] px-[1rem]  text-center rounded-[12px] border border-[#ffffff1c] mr-[1rem] flex items-center`"
+        @click="ordClick">
         {{ filter[state.filterValue].title }}
         <img src="/images/mobile/common/down.svg" class="h-[16px] w-[16px] ml-[16px]"/>
       </div>
       <div
-        class="h-[2rem] leading-[2rem] px-[1.5rem] text-center rounded-[12px] border border-[#ffffff1c] bg-[#1B1A1D] text-[#ffffffa8]">
+        :class="`${state.tabIndex == 2 ? 'bg-[#fff]' : 'bg-[#1B1A1D] text-[#ffffffa8]' } h-[2rem] leading-[2rem] px-[1.5rem] text-center rounded-[12px] border border-[#ffffff1c]`" @click="watchClick">
         Wacth List</div>
     </div>
     <van-action-sheet v-model:show="state.screen" title="FILTER" :closeable="false">
@@ -34,16 +34,16 @@
       </div>
     </van-action-sheet>
     <div class="bg-[#1B1A1D] rounded-t-[1rem] mt-[1rem]">
-      <div class="flex text-[14px] text-[#ffffffa8] px-[1rem] h-[43px] leading-[43px] border border-[#ffffff1c]"
+      <div class="flex justify-between text-[14px] text-[#ffffffa8] px-[1rem] h-[43px] leading-[43px] border border-[#ffffff1c]"
         style="font-family: Hezaedrus-Regular;">
         <div class="w-[10rem]">Name</div>
         <div class="w-[8rem]">Price</div>
-        <div class="flex-1">24h%</div>
+        <div class="">24h%</div>
       </div>
       <div>
         <van-list v-model:loading="state.loading" :finished="state.finished" finished-text="没有更多了" @load="onLoad">
-          <div v-for="(item,index) in state.projectList" :key="index" @click="proClick(item.id)"
-            class="flex h-[2.5rem] leading-[2.5rem] text-[#fff] text-[12px] mx-[1rem] border-b border-[#ffffff1c]"
+          <div v-for="(item,index) in state.projectList" :key="index" @click="proClick(item.id, item.projectId)"
+            class="flex justify-between h-[2.5rem] leading-[2.5rem] text-[#fff] text-[12px] mx-[1rem] border-b border-[#ffffff1c]"
             style="font-family: Hezaedrus-Medium;">
             <div class="w-[10rem] flex items-center">
               <span class="w-[24px]" v-show="index < 100">{{ index + 1 }}</span>
@@ -56,7 +56,7 @@
               </div>
             </div>
             <div class="w-[8rem] ">$0.0<sub>9</sub>3492</div>
-            <div :class="`${item % 2 ? 'text-[#FF5353]' : 'text-[#11B466]'} flex-1`">58.34%</div>
+            <div :class="`${item % 2 ? 'text-[#FF5353]' : 'text-[#11B466]'} `">58.34%</div>
           </div>
         </van-list>
       </div>
@@ -78,7 +78,8 @@ const state = reactive({
   filterValue: 0,
   page:1,
   pageSize: 20,
-  searchInput: ""
+  searchInput: "",
+  tabIndex: 1
 })
 
 const filter = [
@@ -86,6 +87,36 @@ const filter = [
   { title: 'New', value: 1 },
   { title: 'Hot', value: 2 },
 ]
+
+const ordClick = () => {
+  state.screen = !state.screen
+  state.tabIndex = 1
+  state.page = 1;
+  state.projectList = []
+  getProList();
+}
+
+const watchClick = () => {
+  state.tabIndex = 2
+  state.page = 1;
+  state.projectList = []
+  getWatchList();
+}
+
+const getWatchList = () => {
+  request.get(`/plugin/decheck/api/user/collects/page?page=${state.page}&pageSize=${state.pageSize}`).then(res=>{
+    state.loading = false
+    state.page = state.page + 1;
+    if(res.list == null){
+      state.finished = true
+    }else{
+      state.projectList = state.projectList.concat(res.list)
+      state.projectList.forEach(ele => {
+        ele.score = Number(ele.score).toFixed(0)
+      });
+    }
+  })
+}
 
 const onLoad = () => {
   getProList();
@@ -106,11 +137,11 @@ const getProList = () => {
   })
 }
 
-const proClick = (id) => {
+const proClick = (id,pid) => {
   router.push({
     name: 'mbProjectDetail',
     query: {
-      id: id
+      id: state.tabIndex == 1 ? id : pid
     }
   })
 }
