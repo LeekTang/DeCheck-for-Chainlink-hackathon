@@ -75,7 +75,7 @@ const options = [
   { value: "100", label: "Gnosis" },
   { value: "250", label: "Fantom" },
   { value: "321", label: "KCC" },
-  { value: "10001", label: "ETHW" }, 
+  { value: "10001", label: "ETHW" },
   { value: "59140", label: "Linea" },
   { value: "1666600000", label: "Harmony" },
   { value: "tron", label: "Tron" },

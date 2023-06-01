@@ -1,7 +1,1 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Group 122">
-<rect id="Rectangle 163" x="4" y="4" width="16" height="12" rx="3" stroke="white" stroke-width="2"/>
-<path id="Vector 36" d="M12 16V20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector 37" d="M7 20H17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><g stroke="#fff" stroke-width="2"><rect width="16" height="12" x="4" y="4" rx="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v4m-5 0h10"/></g></svg>

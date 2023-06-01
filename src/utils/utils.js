@@ -2,6 +2,10 @@ export function toShort(item, num) {
   return Number(item).toFixed(num)
 }
 
+export function tosix(item) {
+  return Number(item * 100).toFixed(2) + '%'
+}
+
 export function abbr(item) {
   return item.substring(0, 4) + '...' + item.substring(item.length - 4);
 }
@@ -10,7 +14,7 @@ export function imgError(e) {
   e.srcElement.src = '/images/defa.png'
 }
 
-export function timestampToTime(timestamp) {
+export function timestampToTime(timestamp,isShort) {
   // 时间戳为10位需*1000，时间戳为13位不需乘1000
   var date = new Date(timestamp);
   var Y = date.getFullYear() + "-";
@@ -22,7 +26,11 @@ export function timestampToTime(timestamp) {
   var h = date.getHours() + ":";
   var m = date.getMinutes() + ":";
   var s = date.getSeconds();
-  return Y + M + D + h + m + s;
+  if(isShort){
+    return Y + M + D
+  }else{
+    return Y + M + D + h + m + s;
+  }
 }
 
 //复制内容到剪切板
