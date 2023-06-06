@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col">
     <slot></slot>
-    <el-backtop :bottom="isMobile ? 20 : 180" :right="isMobile ? 20 : 100">
+    <el-backtop :bottom="isMobile ? 80 : 180" :right="isMobile ? 20 : 100">
       <img class="h-[1rem] w-[1rem] bg-[#fff] rounded-full" src="/images/backtop.svg" />
     </el-backtop>
   </div>

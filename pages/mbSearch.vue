@@ -187,12 +187,12 @@ const projectHandle = (item, ishistory) => {
       localStorage.setItem('historyList', JSON.stringify(state.recordList))
     }
   }
-  // router.push({
-  //   name: 'mbProjectDetail',
-  //   query: {
-  //     id: item.id
-  //   }
-  // })
+  router.push({
+    name: 'mbProjectDetail',
+    query: {
+      id: item.id
+    }
+  })
 }
 
 onMounted(() => {

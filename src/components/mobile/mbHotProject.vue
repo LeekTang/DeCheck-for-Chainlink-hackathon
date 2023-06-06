@@ -3,11 +3,11 @@
     <div class="text-[1rem] text-[#ffffffa8] mb-[1rem]" style="font-family:Hezaedrus-Bold">HOT PROJECT</div>
     <div>
       <swiper class="hotSwiper">
-        <swiper-slide v-for="(item, index) in state.hotPorject" :key="index">
+        <swiper-slide v-for="(item, index) in state.hotPorject" :key="index" style="width: 144px;">
           <div class="h-[180px] w-[144px] bg-[#1B1A1D] border border-[#ffffff1c] rounded-[12px] text-center">
             <img :src="item.logo" class="h-[100px] w-[100px] rounded-[0.5rem] mx-auto mt-[1rem]" />
             <van-text-ellipsis :content="item.name" class="text-[12px] text-[#fff] mt-[0.6rem]" style="font-family:Hezaedrus-Medium"></van-text-ellipsis>
-            <el-rate disabled  v-model="item.score" />
+            <van-rate readonly  v-model="item.score" size="15" void-icon="star" color="#FFB524" void-color="#FFFFFF54" />
           </div>
         </swiper-slide>
       </swiper>
@@ -33,8 +33,8 @@ const getHotProject = () => {
     state.loading = false
   }
   new Swipers('.hotSwiper', {
-    slidesPerView: 2.3,
-    initialSlide: 1,
+    slidesPerView: parseInt(((document.documentElement.clientWidth - 32) / 144) * 10) /10,
+    // initialSlide: 1,
     observer: true,
     observeParents: true,
     spaceBetween: 16,
@@ -45,7 +45,7 @@ const getHotProject = () => {
       if(ele.tokenAddr){
         ele.tokenList = Object.entries(ele.tokenAddr)
       }
-      ele.score = Number(ele.score).toFixed(0)
+      ele.score = Number(ele.score)
     });
     state.hotPorject = res
     localStorage.setItem('hotProject',JSON.stringify(state.hotPorject))

@@ -23,7 +23,7 @@
       <div class="px-[1rem]">
         <p class="text-[#fff] text-[12px]" style="font-family: Hezaedrus-Bold;">MOST SEARCHES</p>
       </div>
-      <div class="mt-[1rem] px-[1rem] pb-[3.125rem]">
+      <div class="mt-[1rem] px-[1rem] pb-[3.5rem]">
         <div v-for="item in hot" :key="item"
           class="flex items-center justify-between text-[#fff] text-[12px] h-[3rem] leading-[3rem] px-[1rem] mb-[10px] rounded-[12px] bg-[#1B1A1D] border border-[#ffffff1c]"
           style="font-family: Hezaedrus-Medium;" @click="projectHandle(item)">
@@ -163,5 +163,9 @@ const searchClick = () => {
 
 .checked {
   color: #9044FF !important;
+}
+
+:deep(.van-action-sheet__content){
+  padding-bottom: 32px;
 }
 </style>

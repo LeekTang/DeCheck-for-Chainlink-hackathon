@@ -1,24 +1,24 @@
 <template>
     <van-sticky position="bottom">
-        <van-tabbar route :border="false" active-color="white" inactive-color="rgba(255, 255, 255, 0.6)">
-            <van-tabbar-item replace to="/">Explorer
+        <van-tabbar route :border="false" active-color="white" inactive-color="rgba(255, 255, 255, 0.6)" style="height: 56px;">
+            <van-tabbar-item replace to="/" style="font-family: Hezaedrus-Bold;">Explorer
                 <template #icon="props">
-                    <img :src="props.active ? icon.explorerActive : icon.explorer" />
+                    <img :src="props.active ? icon.explorerActive : icon.explorer" style="height: 32px; width: 32px;"/>
                 </template>
             </van-tabbar-item>
-            <van-tabbar-item replace to="/mbCheck">Check
+            <van-tabbar-item replace to="/mbCheck" style="font-family: Hezaedrus-Bold;">Check
                 <template #icon="props">
-                    <img :src="props.active ? icon.checkActive : icon.check" />
+                    <img :src="props.active ? icon.checkActive : icon.check" style="height: 32px; width: 32px;"/>
                 </template>
             </van-tabbar-item>
-            <van-tabbar-item replace to="/mbDao">DAO
+            <van-tabbar-item replace to="/mbDao" style="font-family: Hezaedrus-Bold;">DAO
                 <template #icon="props">
-                    <img :src="props.active ? icon.daoActive : icon.dao" />
+                    <img :src="props.active ? icon.daoActive : icon.dao" style="height: 32px; width: 32px;"/>
                 </template>
             </van-tabbar-item>
-            <van-tabbar-item replace to="/mbProfile">My Profile
+            <van-tabbar-item replace to="/mbProfile" style="font-family: Hezaedrus-Bold;">My Profile
                 <template #icon="props">
-                    <img :src="props.active ? icon.reviewActive : icon.review" />
+                    <img :src="props.active ? icon.reviewActive : icon.review" style="height: 32px; width: 32px;"/>
                 </template>
             </van-tabbar-item>
         </van-tabbar>

@@ -26,7 +26,7 @@
             <div class="w-[312px] p-[24px]">
                 <div class="text-[16px] text-[#fff]" style="font-family: Hezaedrus-bold;">COMMING SOON</div>
                 <div class="bg-[#FFFFFF] h-[40px] leading-[40px] rounded-[12px] mt-[24px] text-center font-medium"
-                    style="font-family: Hezaedrus-Bold;" @click="state.soonShow = false">OKEY</div>
+                    style="font-family: Hezaedrus-Bold;" @click="downClick">OKEY</div>
             </div>
         </van-dialog>
         <van-popup v-model:show="popup" class="bg-[#1B1A1D]" position="bottom">
@@ -55,8 +55,9 @@ import mbHeader from '@/src/components/mobile/mbHeader.vue'
 import tabBar from '@/src/components/mobile/mbTabBar.vue'
 import card from '@/src/components/mobile/dao/card.vue'
 import { useRouter } from 'vue-router'
-
 const router = useRouter()
+import web3js from '@/src/utils/link'
+
 const activePopup = (index) => {
     state.popup = true;
     state.popupData = toRefs(state.list[index]);
@@ -73,6 +74,11 @@ const reviewPopAction = () => {
     } else {
         state.soonShow = true
     }
+}
+
+const downClick = () => {
+    state.soonShow = false
+    web3js.NFTget()
 }
 
 const state = reactive({

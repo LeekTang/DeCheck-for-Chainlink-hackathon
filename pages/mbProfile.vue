@@ -20,44 +20,60 @@
             </div>
             <div class="text-[14px] text-[white] flex">
                 <div class="flex-col w-[50%] pr-[8px]">
-                    <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] ">
+                    <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] "
+                        @click="urlPush('mbDck')">
                         <img src="/images/mobile/profile/message.svg" alt="">
                         <h4 class="pt-[10px]">DCK Reward</h4>
                     </div>
-                    <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] ">
+                    <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] "
+                        @click="state.soonShow = true">
                         <img src="/images/mobile/profile/mail.svg" alt="">
                         <h4 class="pt-[10px]">Invite Reward</h4>
                     </div>
                 </div>
                 <div class="flex-col w-[50%] pl-[8px]">
-                    <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] ">
+                    <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] "
+                        @click="urlPush('mbLuckyBox')">
                         <img src="/images/mobile/profile/gift.svg" alt="">
                         <h4 class="pt-[10px]">Lucky Box</h4>
                     </div>
-                    <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] ">
+                    <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] "
+                        @click="state.soonShow = true">
                         <img src="/images/mobile/profile/bounty.svg" alt="">
                         <h4 class="pt-[10px]">DeCheck Bounty</h4>
                     </div>
                 </div>
             </div>
             <h3 class="text-textGray text-[14px]">MY REVIEWS ({{ state.proNumber }})</h3>
-            <div class="flex-col text-[white] mt-[1rem]" v-for="item in state.reviewList" :key="item.id">
-                <van-skeleton title avatar :row="3" :loading="state.loading">
+            <div class="text-center h-[6rem] leading-[6rem]" v-if="state.loading">
+                <van-loading color="#0094ff" />
+            </div>
+            <template v-else>
+                <div class="flex-col text-[white] mt-[1rem]" v-for="item in state.reviewList" :key="item.id">
                     <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c]"
                         @click="checkDetail(item.id)">
                         <div class="flex justify-between pb-[5px]">
                             <div class="text-[16px]">{{ item.projectName }}</div>
-                            <span class="text-[#ffffff6c] text-[12px]"
-                                style="font-family: Hezaedrus-regular;">{{ timestampToTime(item.createAt, true)}}</span>
+                            <span class="text-[#ffffff6c] text-[12px]" style="font-family: Hezaedrus-regular;">{{
+                                timestampToTime(item.createAt, true) }}</span>
                         </div>
                         <div>
-                            <el-rate v-model="item.score" />
+                            <van-rate readonly v-model="item.score" size="15" void-icon="star" color="#FFB524"
+                                void-color="#FFFFFF54" />
                         </div>
-                        <article class="text-[12px] line-clamp-3 whitespace-pre-wrap" style="font-family: Hezaedrus-regular;" v-html="item.content">
+                        <article class="text-[12px] line-clamp-3 whitespace-pre-wrap"
+                            style="font-family: Hezaedrus-regular;" v-html="item.content">
                         </article>
                     </div>
-                </van-skeleton>
-            </div>
+                </div>
+            </template>
+            <van-dialog v-model:show="state.soonShow" :showConfirmButton="false">
+                <div class="w-[312px] p-[24px]">
+                    <div class="text-[16px] text-[#fff]" style="font-family: Hezaedrus-bold;">COMMING SOON</div>
+                    <div class="bg-[#FFFFFF] h-[40px] leading-[40px] rounded-[12px] mt-[24px] text-center font-medium"
+                        style="font-family: Hezaedrus-Bold;" @click="state.soonShow = false">OKEY</div>
+                </div>
+            </van-dialog>
         </div>
         <tabBar></tabBar>
     </div>
@@ -80,7 +96,8 @@ const state = reactive({
     proNumber: 0,
     page: 1,
     pageSize: 20,
-    reviewList: []
+    reviewList: [],
+    soonShow: false
 })
 
 const connectClick = () => {
@@ -114,8 +131,7 @@ const connectClick = () => {
 
 const getReview = () => {
     request.get(`/plugin/decheck/api/user/review/page?page=${state.page}&pageSize=${state.pageSize}`).then(res => {
-        console.log(res)
-        state.loading = false;
+        state.loading = false
         state.proNumber = res.total
         state.reviewList = res.list
     })
@@ -124,7 +140,7 @@ const getReview = () => {
 onMounted(() => {
     if (!store.isSign) {
         connectClick()
-    }else{
+    } else {
         getReview()
     }
 })
@@ -134,5 +150,17 @@ const checkDetail = (id) => {
         query: { id: id }
     })
 }
+
+const urlPush = (url) => {
+    if(url){
+        router.push({
+            name: url
+        })
+    }
+}
+
 </script>
-<style scoped></style>
+<style scoped>:deep(.van-popup) {
+    background: #302D34;
+    border-radius: 12px;
+}</style>

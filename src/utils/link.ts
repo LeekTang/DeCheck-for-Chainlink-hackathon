@@ -7,6 +7,8 @@ const provider: ethAuth = {
     provider: "",
 }
 
+import { abi } from './NFTABI'
+
 export default {
     ...provider,
     // 链接
@@ -67,6 +69,18 @@ export default {
                 })
             }
         }
+    },
+
+    NFTget:async function (){
+        let provider = new Web3(window.ethereum);
+        let accounts = await provider.eth.getAccounts()
+        console.log(accounts[0])
+        let newContract = new provider.eth.Contract( abi , '0x904812b9727709f0eFc431a84c7fb22B5f5c09c4');
+        console.log(newContract.methods)
+        newContract.methods.balanceOf(accounts[0]).call().then( res => {
+            console.log(res)
+        })
+        
     },
 
     getSign(message = 'Welcome to DeCheck! Click to sign in and accept the DeCheck Terms of Service: https://decheck.io This request will not trigger a blockchain transaction or cost any gas fees.') {

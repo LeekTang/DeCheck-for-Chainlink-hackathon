@@ -12,7 +12,7 @@
         class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c] ml-[1rem]">
         <img src="/images/mobile/home/search.svg" class="h-[18px] w-[18px]" />
       </NuxtLink>
-      <div class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c] ml-[1rem]" v-if="!store.isSign">
+      <div class="h-[34px] w-[34px] p-[7px] rounded-full bg-[#1B1A1D] border border-[#ffffff1c] ml-[1rem]" v-if="store.isSign == false">
         <img src="/images/mobile/home/mine.svg" class="h-[18px] w-[18px]" @click="connectClick"/>
       </div>
       <van-popover v-model:show="state.showPopover" theme="dark" placement="bottom-end" v-else>

@@ -33,25 +33,25 @@
           @click="closeFilter">ok</div>
       </div>
     </van-action-sheet>
-    <div class="bg-[#1B1A1D] rounded-t-[1rem] mt-[1rem]">
-      <div class="flex justify-between text-[14px] text-[#ffffffa8] px-[1rem] h-[43px] leading-[43px] border border-[#ffffff1c]"
+    <div class="bg-[#1B1A1D] rounded-t-[1rem] mt-[1rem] mb-[3.5rem]">
+      <div class="flex justify-between text-[14px] text-[#ffffffa8] px-[1rem] h-[43px] leading-[43px] border-b border-[#ffffff1c]"
         style="font-family: Hezaedrus-Regular;">
         <div class="w-[10rem]">Name</div>
         <div class="w-[8rem]">Price</div>
         <div class="">24h%</div>
       </div>
       <div>
-        <van-list v-model:loading="state.loading" :finished="state.finished" finished-text="没有更多了" @load="onLoad">
+        <van-list v-model:loading="state.loading" :finished="state.finished" loading-text="In the load" finished-text="No more data" @load="onLoad">
           <div v-for="(item,index) in state.projectList" :key="index" @click="proClick(item.id, item.projectId)"
-            class="flex justify-between h-[2.5rem] leading-[2.5rem] text-[#fff] text-[12px] mx-[1rem] border-b border-[#ffffff1c]"
+            class="flex justify-between h-[2.5rem] leading-[2.5rem] text-[#fff] text-[12px] mx-[1rem] border-b border-[#ffffff1c] font-medium"
             style="font-family: Hezaedrus-Medium;">
             <div class="w-[10rem] flex items-center">
               <span class="w-[24px]" v-show="index < 100">{{ index + 1 }}</span>
               <div class="flex">
-                <img :src="item.logo" class="h-[1.6rem] w-[1.6rem] rounded-[8px] mr-[10px]" />
-                <div class="h-[24px] flex flex-col justify-between">
-                  <van-text-ellipsis :content="item.name" class="text-[12px] h-[12px] mb-[0.4rem] leading-[12px]"></van-text-ellipsis>
-                  <el-rate disabled v-model="item.score" />
+                <img :src="item.logo" @error="imgError" class="h-[1.7rem] w-[1.7rem] rounded-[8px] mr-[10px]" />
+                <div class="h-[27px] flex flex-col justify-between">
+                  <van-text-ellipsis :content="item.name" class="text-[12px] h-[12px] " style="line-height: 12px;"></van-text-ellipsis>
+                  <van-rate readonly  v-model="item.score" size="9" void-icon="star" color="#FFB524" void-color="#FFFFFF54" />
                 </div>
               </div>
             </div>
@@ -66,6 +66,7 @@
 
 <script setup>
 import { reactive, onMounted } from 'vue'
+import { imgError } from '@/src/utils/utils'
 import request from '@/src/utils/request'
 import { useRouter } from 'vue-router'
 const router = useRouter()
@@ -112,14 +113,18 @@ const getWatchList = () => {
     }else{
       state.projectList = state.projectList.concat(res.list)
       state.projectList.forEach(ele => {
-        ele.score = Number(ele.score).toFixed(0)
+        ele.score = Number(ele.score)
       });
     }
   })
 }
 
 const onLoad = () => {
-  getProList();
+  if(state.tabIndex == 1){
+    getProList();
+  }else if (state.tabIndex == 2){
+    getWatchList();
+  }
 }
 
 const getProList = () => {
@@ -131,7 +136,7 @@ const getProList = () => {
     }else{
       state.projectList = state.projectList.concat(res.list)
       state.projectList.forEach(ele => {
-        ele.score = Number(ele.score).toFixed(0)
+        ele.score = Number(ele.score)
       });
     }
   })
@@ -156,17 +161,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
-:deep(.el-rate) {
-  height: 8px;
-}
 
-:deep(.el-rate__item) {
-  width: 14px;
-}
-
-:deep(.el-icon svg) {
-  height: 14px;
-  width: 14px;
+:deep(.van-rate__item){
+  transform:scale(0.75);
+  padding-right: 2px;
 }
 
 :deep(.van-popup) {

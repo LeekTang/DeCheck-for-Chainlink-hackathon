@@ -4,7 +4,7 @@
       <img class="h-[24px] w-[24px]" src="/images/mobile/common/back.svg" @click="backHandle" />
     </div>
     <div class="flex px-[1rem]">
-      <img :src="state.projectLogo" class="h-[2.5rem] w-[2.5rem] rounded-[0.5rem] mr-[0.625rem]" />
+      <img :src="state.projectLogo" @error="imgError" class="h-[2.5rem] w-[2.5rem] rounded-[0.5rem] mr-[0.625rem]" />
       <div>
         <p class="text-[1rem] text-[#fff] font-medium" style="font-family: Hezaedrus-Medium;">{{ state.projectName }}</p>
         <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">RATE THIS ITEM</p>
@@ -28,14 +28,17 @@
         <img src="/images/close.svg" class="h-[1rem] w-[1rem] cursor-pointer absolute top-0 right-0"
           @click="handleRemove(item, 0)" />
       </div>
-      <div class="flex items-center overflow-x-scroll" v-else>
-        <div class="h-[3.5rem] w-[3.5rem] rounded-[0.75rem] ml-[0.625rem] relative mb-[1rem]"
-          v-for="(item, index) in state.allImgList" :key="index">
-          <img class="h-[3.5rem] w-[3.5rem] rounded-[0.75rem] relative" :src="item" />
-          <img src="/images/close.svg" class="h-[1rem] w-[1rem] cursor-pointer absolute top-0 right-0"
-            @click="handleRemove(item, index)" />
+      <template v-else>
+        <div class="flex items-center overflow-x-scroll">
+          <div class="h-[3.5rem] w-[3.5rem] flex-shrink-0 rounded-[0.75rem] ml-[0.625rem] relative mb-[1rem]"
+            v-for="(item, index) in state.allImgList" :key="index">
+            <img class="h-[3.5rem] w-[3.5rem] rounded-[0.75rem] relative" :src="item" />
+            <img src="/images/close.svg" class="h-[1rem] w-[1rem] cursor-pointer absolute top-0 right-0"
+              @click="handleRemove(item, index)" />
+          </div>
         </div>
-      </div>
+      </template>
+      
       <div class="flex justify-between bg-[#302D34] px-[1.5rem] w-full py-[1rem] border-t border-[#ffffff1c]">
         <div>
           <van-uploader v-model="state.fileList" accept="video/*,image/*" :max-count="state.maxCount"
@@ -56,6 +59,7 @@
 <script setup>
 import axios from 'axios';
 import { reactive, onMounted } from 'vue'
+import { imgError } from '@/src/utils/utils'
 import request from '@/src/utils/request'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n();
@@ -74,7 +78,7 @@ const state = reactive({
   values: '',
   fileList: [],
   allImgList: [],
-  maxCount: 1,
+  maxCount: 8,
   isVideo: false,
   reviewID: ""
 })
@@ -198,7 +202,6 @@ const submitClick = () => {
 
 const getDetail = () => {
   request.get(`/plugin/decheck/api/project/review/detail/${state.reviewID}`).then(res => {
-    console.log(res)
     state.rate = res.score
     state.values = res.content
     state.chainID = res.chainId

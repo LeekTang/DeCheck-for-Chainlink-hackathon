@@ -11,16 +11,7 @@
     </div>
   </template>
   <template v-else>
-    <div class="bg-[#070312] min-h-screen">
-      <mbHeader>
-        <template v-slot:left>
-          EXPLORER
-        </template>
-      </mbHeader>
-      <mbHot></mbHot>
-      <mbPor></mbPor>
-      <tabBar></tabBar>
-    </div>
+    <mbIndex />
   </template>
 </template>
 <script setup>
@@ -32,10 +23,7 @@ import HotRevi from '@/src/components/hotRevi.vue'
 import Superiority from '@/src/components/Superiority.vue'
 import Contract from '@/src/components/Contract.vue'
 import BottomBar from '@/src/components/BottomBar.vue'
-import mbHeader from '@/src/components/mobile/mbHeader.vue'
-import mbHot from '@/src/components/mobile/mbHotProject.vue'
-import mbPor from '@/src/components/mobile/mbProject.vue'
-import tabBar from '@/src/components/mobile/mbTabBar.vue'
+import mbIndex from '@/pages/mbIndex.vue'
 
 const state = reactive({
   isMobile: false

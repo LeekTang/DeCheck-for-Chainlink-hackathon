@@ -12,7 +12,7 @@
     <div class="flex justify-between text-[#ffffff] mt-[24px]" style="font-family: Hezaedrus-Medium;">
       <div>
         <p class="text-[18px]">{{ state.projectDetail.score }}</p>
-        <van-rate readonly color="#ffd21e" v-model="state.projectDetail.score" :size="16" />
+        <van-rate readonly void-icon="star" color="#ffd21e" void-color="#FFFFFF54" v-model="state.projectDetail.score" :size="16" />
       </div>
       <div class="text-right text-[14px] flex flex-col justify-between">
         <p>$1822.53</p>
@@ -49,7 +49,7 @@
     </van-action-sheet>
     <div class="flex items-center justify-between mt-[10px]">
       <div @click="collect"
-        class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px]">
+        class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px] border border-[#ffffff1c]">
         <img
           :src="state.projectDetail.collected == 1 ? '/images/mobile/project/collected.svg' : '/images/mobile/project/collect-not.svg'"
           class="h-[24px] w-[24px]" />
@@ -57,13 +57,13 @@
           'Collected' :
           'Collect' }}</p>
       </div>
-      <div @click="state.linkShow = true"
-        class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px]">
+      <div @click="linkClick"
+        class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px] border border-[#ffffff1c]">
         <img src="/images/mobile/project/link.svg" class="h-[24px] w-[24px]" />
         <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">Links</p>
       </div>
       <div
-        class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px]">
+        class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px] border border-[#ffffff1c]">
         <img src="/images/mobile/project/share.svg" class="h-[24px] w-[24px]" />
         <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">Share</p>
       </div>
@@ -86,16 +86,16 @@
       </span>
     </div>
     <div class="text-[#fff] mt-[1rem]" v-if="state.tabIndex == 1">
-      <div class="p-[16px] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem]" v-if="state.ownReview.length > 0">
+      <div class="p-[16px] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem]" v-if="Object.keys(state.ownReview).length > 0">
         <div class="flex justify-between items-start">
           <p class="text-[16px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">MY COMMENT</p>
           <p class="leading-[0.5rem]">...</p>
         </div>
-        <van-rate v-model="state.ownReview.score" :size="14" color="#FFB524" class="my-[0.75rem]"/>
+        <van-rate v-model="state.ownReview.score" void-icon="star" :size="14" color="#FFB524" void-color="#FFFFFF54" class="my-[0.75rem]"/>
         <article class="text-[12px] line-clamp-3 whitespace-pre-wrap" style="font-family: Hezaedrus-regular;"
           v-html="state.ownReview.content">
         </article>
-        <p class="text-[14px] text-[#9044FF] mt-[0.75rem]" style="font-family: Hezaedrus-Bold;">EDIT COMMNET</p>
+        <p class="text-[14px] text-[#9044FF] mt-[0.75rem]" @click="checkDetail()" style="font-family: Hezaedrus-Bold;">EDIT COMMNET</p>
       </div>
       <div class="p-[16px] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem]" v-else>
         <p class="text-[16px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">RATE THIS ITEM</p>
@@ -132,7 +132,7 @@
               </div>
             </div>
             <div class="text-right">
-              <van-rate v-model="item.score" color="#FFB524" size="14" />
+              <van-rate v-model="item.score" readonly void-icon="star" color="#FFB524" void-color="#FFFFFF54" size="14" />
               <p class="text-[0.75rem] text-[#ffffff85] mt-[0.1rem]" style="font-family: Hezaedrus-Regular;">{{
                 timestampToTime(item.createAt, true) }}</p>
             </div>
@@ -145,7 +145,7 @@
             </span>
           </div>
           <div class="flex items-center overflow-x-scroll mt-[0.75rem]" v-if="item.image">
-            <div class="h-[3.5rem] w-[3.5rem] mr-[0.625rem] rounded-[0.75rem] " v-for="(img, index) in item.attachment"
+            <div class="h-[3.5rem] w-[3.5rem] mr-[0.625rem] rounded-[0.75rem] flex-shrink-0 " v-for="(img, index) in item.attachment"
               :key="index" @click="showPreview(item.attachment, index)">
               <img class="h-[3.5rem] w-[3.5rem] rounded-[0.75rem]" :src="img" style="object-fit: cover;" />
             </div>
@@ -444,6 +444,12 @@ const collect = () => {
   })
 }
 
+const linkClick = () => {
+  if ( state.projectDetail.socialMedia !== null){
+    state.linkShow = true
+  }
+}
+
 const closeFilter = () => {
   state.chainShow = false
 }
@@ -600,10 +606,19 @@ const getProject = () => {
 
 const getOwnReview = () => {
   request.get(`/plugin/decheck/api/user/review/${state.projectID}/${state.chainAddress}/helpful-top`).then(res => {
-    console.log(res)
     if(res){
       state.ownReview = res
     }
+  })
+}
+
+const checkDetail = () => {
+  router.push({
+      name: 'mbReview',
+      query: { 
+        id: state.ownReview.projectId,
+        reviewID: state.ownReview.id
+      }
   })
 }
 
@@ -646,6 +661,7 @@ onMounted(() => {
   background-image: linear-gradient(235.07deg, #19B5E8 7.95%, #8C4CE8 91.48%);
   color: transparent;
   -webkit-background-clip: text;
+  background-clip: text;
 }
 
 :deep(.van-popup) {
@@ -663,4 +679,9 @@ onMounted(() => {
 
 .checked {
   color: #9044FF !important;
-}</style>
+}
+
+:deep(.van-action-sheet__content){
+  padding-bottom: 32px;
+}
+</style>
