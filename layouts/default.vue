@@ -10,6 +10,8 @@
 <script setup>
 import '../assets/css/index.css'
 import { ElBacktop } from 'element-plus';
+import { initializeApp } from 'firebase/app'
+import { getAnalytics } from 'firebase/analytics'
 import { onMounted } from 'vue'
 import { userStore } from '@/src/stores/user';
 const store = userStore();
@@ -21,7 +23,22 @@ const isMobile = () => {
   return flag;
 }
 
+const initFireBase = () => {
+  const firebaseConfig = {
+    apiKey: "AIzaSyCSLl0MGoILXK7DyZTLQho-eiCI-n7y7l0",
+    authDomain: "decheck-e3f5a.firebaseapp.com",
+    projectId: "decheck-e3f5a",
+    storageBucket: "decheck-e3f5a.appspot.com",
+    messagingSenderId: "975857598424",
+    appId: "1:975857598424:web:8a9349ac27c9710fd6fcad",
+    measurementId: "G-DCK4VDZZBV"
+  };
+	const app = initializeApp(firebaseConfig);
+	const analytics = getAnalytics(app);
+};
+
 onMounted(() => {
+  initFireBase()
   store.isMobile = !!isMobile();
   window.addEventListener('resize', () => {
     setTimeout(() => {
