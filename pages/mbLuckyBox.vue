@@ -64,7 +64,9 @@
 </template>
 
 <script setup>
+import { reactive, onMounted } from 'vue';
 import mbHeader from '@/src/components/mobile/mbHeader.vue'
+import web3js from '@/src/utils/link'
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
@@ -84,6 +86,14 @@ const historyList = [
 const goBack = () => {
   router.go(-1);
 }
+
+const getLastTime = () => {
+  web3js.lastLuckyTime()
+}
+
+onMounted(()=>{
+  getLastTime()
+})
 </script>
 
 <style scoped>

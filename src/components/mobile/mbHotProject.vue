@@ -1,9 +1,9 @@
 <template>
   <div class="px-[1rem]">
-    <div class="text-[1rem] text-[#ffffffa8] mb-[1rem]" style="font-family:Hezaedrus-Bold">HOT PROJECT</div>
+    <div class="text-[1rem] text-[#ffffffa8] mb-[1rem]" style="font-family:Hezaedrus-Bold">{{ t('hotProjects') }}</div>
     <div>
       <swiper class="hotSwiper">
-        <swiper-slide v-for="(item, index) in state.hotPorject" :key="index" style="width: 144px;">
+        <swiper-slide v-for="(item, index) in state.hotPorject" :key="index" style="width: 144px;" @click="proClick(item)">
           <div class="h-[180px] w-[144px] bg-[#1B1A1D] border border-[#ffffff1c] rounded-[12px] text-center">
             <img :src="item.logo" class="h-[100px] w-[100px] rounded-[0.5rem] mx-auto mt-[1rem]" />
             <van-text-ellipsis :content="item.name" class="text-[12px] text-[#fff] mt-[0.6rem]" style="font-family:Hezaedrus-Medium"></van-text-ellipsis>
@@ -18,9 +18,13 @@
 <script setup>
 import { reactive, onMounted } from 'vue'
 import request from '@/src/utils/request'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 import SwiperCore, { Autoplay, Navigation } from 'swiper'
 import Swipers from 'swiper'
 SwiperCore.use([Autoplay, Navigation])
+import { useI18n } from  'vue-i18n'
+const { t } = useI18n();
 
 const state = reactive({
   rate: 3,
@@ -49,6 +53,15 @@ const getHotProject = () => {
     });
     state.hotPorject = res
     localStorage.setItem('hotProject',JSON.stringify(state.hotPorject))
+  })
+}
+
+const proClick = (item) => {
+  router.push({
+    name: 'mbProjectDetail',
+    query: {
+      id: item.id
+    }
   })
 }
 

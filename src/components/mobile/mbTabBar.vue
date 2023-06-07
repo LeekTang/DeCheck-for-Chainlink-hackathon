@@ -1,12 +1,12 @@
 <template>
     <van-sticky position="bottom">
         <van-tabbar route :border="false" active-color="white" inactive-color="rgba(255, 255, 255, 0.6)" style="height: 56px;">
-            <van-tabbar-item replace to="/" style="font-family: Hezaedrus-Bold;">Explorer
+            <van-tabbar-item replace to="/" style="font-family: Hezaedrus-Bold;">{{ t('Explorer') }}
                 <template #icon="props">
                     <img :src="props.active ? icon.explorerActive : icon.explorer" style="height: 32px; width: 32px;"/>
                 </template>
             </van-tabbar-item>
-            <van-tabbar-item replace to="/mbCheck" style="font-family: Hezaedrus-Bold;">Check
+            <van-tabbar-item replace to="/mbCheck" style="font-family: Hezaedrus-Bold;">{{ t('Check') }}
                 <template #icon="props">
                     <img :src="props.active ? icon.checkActive : icon.check" style="height: 32px; width: 32px;"/>
                 </template>
@@ -16,7 +16,7 @@
                     <img :src="props.active ? icon.daoActive : icon.dao" style="height: 32px; width: 32px;"/>
                 </template>
             </van-tabbar-item>
-            <van-tabbar-item replace to="/mbProfile" style="font-family: Hezaedrus-Bold;">My Profile
+            <van-tabbar-item replace to="/mbProfile" style="font-family: Hezaedrus-Bold;">{{ t('profile') }}
                 <template #icon="props">
                     <img :src="props.active ? icon.reviewActive : icon.review" style="height: 32px; width: 32px;"/>
                 </template>
@@ -25,6 +25,8 @@
     </van-sticky>
 </template>
 <script setup>
+import { useI18n } from  'vue-i18n'
+const { t } = useI18n();
 
 const icon = {
     check: '/images/mobile/common/check.svg',

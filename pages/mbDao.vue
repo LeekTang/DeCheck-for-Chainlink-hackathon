@@ -2,7 +2,7 @@
     <div class="bg-[#070312] min-h-screen pb-[60px]">
         <mbHeader>
             <template v-slot:left>
-                EXPLORER
+                {{ t('Explorer') }}
             </template>
         </mbHeader>
         <div class="pt-[16px] px-[11px] min-h-screen overflow-y-auto overscroll-y-contain"
@@ -57,6 +57,8 @@ import card from '@/src/components/mobile/dao/card.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 import web3js from '@/src/utils/link'
+import { useI18n } from  'vue-i18n'
+const { t } = useI18n();
 
 const activePopup = (index) => {
     state.popup = true;
@@ -78,7 +80,9 @@ const reviewPopAction = () => {
 
 const downClick = () => {
     state.soonShow = false
-    web3js.NFTget()
+    web3js.isReviewerNFT().then(res=>{
+        console.log(res)
+    })
 }
 
 const state = reactive({

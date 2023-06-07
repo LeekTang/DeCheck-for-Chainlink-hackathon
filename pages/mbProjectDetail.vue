@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <van-action-sheet v-model:show="state.chainShow" title="CONTRACTS">
+    <van-action-sheet v-model:show="state.chainShow" :title="t('Contracts')">
       <van-radio-group v-model="state.chainId" checked-color="#9044FF">
         <van-cell-group inset :border="false" style="font-family: Hezaedrus-Medium;">
           <van-cell :border="false" v-for="item in state.tokenList" :key="item[0]" :title="item.chain"
@@ -54,21 +54,21 @@
           :src="state.projectDetail.collected == 1 ? '/images/mobile/project/collected.svg' : '/images/mobile/project/collect-not.svg'"
           class="h-[24px] w-[24px]" />
         <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">{{ state.projectDetail.collected == 1 ?
-          'Collected' :
-          'Collect' }}</p>
+          t('collected') :
+          t('collect') }}</p>
       </div>
       <div @click="linkClick"
         class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px] border border-[#ffffff1c]">
         <img src="/images/mobile/project/link.svg" class="h-[24px] w-[24px]" />
-        <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">Links</p>
+        <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">{{ t('links') }}</p>
       </div>
       <div
         class="py-[8px] px-[16px] h-[66px] w-[102px] flex flex-col items-center justify-between bg-[#1B1A1D] rounded-[12px] border border-[#ffffff1c]">
         <img src="/images/mobile/project/share.svg" class="h-[24px] w-[24px]" />
-        <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">Share</p>
+        <p class="text-[14px] text-[#fff]" style="font-family: Hezaedrus-Medium;">{{ t('share') }}</p>
       </div>
     </div>
-    <van-action-sheet v-model:show="state.linkShow" title="LINKS" :closeable="false">
+    <van-action-sheet v-model:show="state.linkShow" :title="t('links')" :closeable="false">
       <van-cell-group inset :border="false" style="font-family: Hezaedrus-Medium;">
         <template v-for="item in iconList" :key="item.name">
           <van-cell :border="false" v-if="item.webSrc" :title="item.name" is-link :url="item.webSrc">
@@ -88,23 +88,23 @@
     <div class="text-[#fff] mt-[1rem]" v-if="state.tabIndex == 1">
       <div class="p-[16px] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem]" v-if="Object.keys(state.ownReview).length > 0">
         <div class="flex justify-between items-start">
-          <p class="text-[16px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">MY COMMENT</p>
+          <p class="text-[16px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">{{ t('myComment') }}</p>
           <p class="leading-[0.5rem]">...</p>
         </div>
         <van-rate v-model="state.ownReview.score" void-icon="star" :size="14" color="#FFB524" void-color="#FFFFFF54" class="my-[0.75rem]"/>
         <article class="text-[12px] line-clamp-3 whitespace-pre-wrap" style="font-family: Hezaedrus-regular;"
           v-html="state.ownReview.content">
         </article>
-        <p class="text-[14px] text-[#9044FF] mt-[0.75rem]" @click="checkDetail()" style="font-family: Hezaedrus-Bold;">EDIT COMMNET</p>
+        <p class="text-[14px] text-[#9044FF] mt-[0.75rem]" @click="checkDetail()" style="font-family: Hezaedrus-Bold;">{{ t('editComment') }}</p>
       </div>
       <div class="p-[16px] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem]" v-else>
-        <p class="text-[16px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">RATE THIS ITEM</p>
+        <p class="text-[16px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">{{ t('rateItem') }}</p>
         <van-rate v-model="state.reviewRate" :size="30" color="#FFB524" class="justify-between my-[1rem]"
           @click="reviewHandle" />
-        <p class="text-[14px] text-[#9044FF]" style="font-family: Hezaedrus-Bold;">WRITE A REVIEW</p>
+        <p class="text-[14px] text-[#9044FF]" style="font-family: Hezaedrus-Bold;">{{ t('waiteReview') }}</p>
       </div>
       <div class="mt-[2rem]">
-        <p class="text-[14px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">Reviews</p>
+        <p class="text-[14px] text-[#fff] font-bold" style="font-family: Hezaedrus-Bold;">{{ t('decheckReview') }}</p>
         <div class="flex mt-[1rem]">
           <div
             class="h-[2rem] flex items-center px-[0.75rem] py-[0.56rem] border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem] mr-[1rem]">
@@ -128,7 +128,7 @@
                   <img v-if="item.type == 1" src="/images/mobile/project/authen.svg"
                     class="h-[0.875rem] w-[0.875rem] ml-[0.2rem]" />
                 </p>
-                <p :class="`${item.type == 1 ? 'linear-text' : ''}`">Reviewed: {{ item.reviewed }}</p>
+                <p :class="`${item.type == 1 ? 'linear-text' : ''}`">{{ t('reviewed') }}: {{ item.reviewed }}</p>
               </div>
             </div>
             <div class="text-right">
@@ -166,12 +166,12 @@
     <div class="text-[#fff]" v-else-if="state.tabIndex == 2">
       <div class="border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem] p-[1rem] mt-[1rem]">
         <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
-          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Token Name</p>
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">{{ t('tokenName') }}</p>
           <div class="text-[0.75rem] text-[#ffffff]" style="font-family: Hezaedrus-Medium;">{{
             state.checkInfo.token_name }}({{ state.checkInfo.token_symbol }})</div>
         </div>
         <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
-          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Contract Creator</p>
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">{{ t('contractCreator') }}</p>
           <div class="text-[0.75rem] text-[#ffffff] flex " style="font-family: Hezaedrus-Medium;"
             v-if="state.checkInfo.creator_address">
             <p>{{ abbr(state.checkInfo.creator_address) }}</p>
@@ -180,7 +180,7 @@
           </div>
         </div>
         <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
-          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Contract Owner</p>
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">{{ t('contractOwner') }}</p>
           <div class="text-[0.75rem] text-[#ffffff] flex " style="font-family: Hezaedrus-Medium;"
             v-if="state.checkInfo.owner_address">
             <p>{{ abbr(state.checkInfo.owner_address) }}</p>
@@ -189,38 +189,38 @@
           </div>
         </div>
         <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
-          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Total Supply</p>
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">{{ t('totalSupply') }}</p>
           <div class="text-[0.75rem] text-[#ffffff] flex " style="font-family: Hezaedrus-Medium;">
             <p>{{ toShort(state.checkInfo.total_supply, 2) || '--' }}</p>
           </div>
         </div>
         <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
-          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Buy Tax</p>
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">{{ t('buyTax') }}</p>
           <div class="text-[0.75rem] text-[#11B466]" style="font-family: Hezaedrus-Medium;">{{ state.checkInfo.buy_tax +
             '%' }}</div>
         </div>
         <div class="flex items-center justify-between border-b border-[#ffffff1c] py-[0.875rem]">
-          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">Sell Tax</p>
+          <p class="text-[0.75rem] text-[#ffffffa8]" style="font-family: Hezaedrus-Regular;">{{ t('sellTax') }}</p>
           <div class="text-[0.75rem] text-[#FF4242]" style="font-family: Hezaedrus-Medium;">{{ state.checkInfo.sell_tax +
             '%' }}</div>
         </div>
       </div>
       <!-- holder -->
       <div class="border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem] p-[1rem] mt-[1rem]">
-        <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">Token Holders Info</p>
+        <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">{{ t('tokenHoldersInfo') }}</p>
         <div class="flex items-center justify-between text-[1.125rem] font-bold mt-[1rem]"
           style="font-family: Hezaedrus-Bold;">
           <div class="text-[#ffffff]">
             <p>{{ state.checkInfo.holder_count }}</p>
             <p class="text-[0.75rem] text-[#ffffffa8] leading-[0.75rem] font-normal"
-              style="font-family: Hezaedrus-Regular;">Token Holders </p>
+              style="font-family: Hezaedrus-Regular;">{{ t('tokenHolders') }} </p>
           </div>
           <p class="text-[#11B466]">{{ state.holdPer + '%' }}</p>
         </div>
         <van-progress :percentage="state.holdPer" stroke-width="8" color="#11B466" :show-pivot="false"
           class="mt-[0.625rem]" />
         <div class="mt-[1.5rem]">
-          <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">Top 10 Holders Ratio
+          <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">{{ t('top10holders') }}
           </p>
           <template v-for="(item, index) in state.checkInfo.holders" :key="index">
             <div v-if="index < state.holderMore"
@@ -247,27 +247,27 @@
           <div v-if="state.checkInfo.holders.length > 3" @click="showMore(1)"
             class="h-[2.5rem] border border-[#ffffffa8] rounded-[0.75rem] text-center leading-[2.5rem] text-[0.875rem] text-[#fff] font-medium mt-[1rem]"
             style="font-family: Hezaedrus-Medium;">
-            {{ state.holderMore == 3 ? 'VIEW ALL' : 'PUT AWAY' }}
+            {{ state.holderMore == 3 ? t('viewAll') : t('putAway') }}
           </div>
         </div>
       </div>
       <!-- pool -->
       <div class="border border-[#ffffff1c] bg-[#1B1A1D] rounded-[0.75rem] p-[1rem] mt-[1rem]"
         v-if="state.checkInfo.lp_holders">
-        <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">LP Pool Info</p>
+        <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">{{ t('LPPoolInfo') }}</p>
         <div class="flex items-center justify-between text-[1.125rem] font-bold mt-[1rem]"
           style="font-family: Hezaedrus-Bold;">
           <div class="text-[#ffffff]">
             <p>{{ state.checkInfo.lp_holder_count }}</p>
             <p class="text-[0.75rem] text-[#ffffffa8] leading-[0.75rem] font-normal"
-              style="font-family: Hezaedrus-Regular;">Token Holders </p>
+              style="font-family: Hezaedrus-Regular;">{{ t('tokenHolders') }}</p>
           </div>
           <p class="text-[#9044FF]">{{ state.poolPer + '%' }}</p>
         </div>
         <van-progress :percentage="state.poolPer" stroke-width="8" color="#9044FF" :show-pivot="false"
           class="mt-[0.625rem]" />
         <div class="mt-[1.5rem]">
-          <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">Top 10 Holders Ratio
+          <p class="text-[0.75rem] text-[#ffffff] font-medium" style="font-family: Hezaedrus-Medium;">{{ t('top10holders') }}
           </p>
           <template v-for="(item, index) in state.checkInfo.lp_holders" :key="index">
             <div v-if="index < state.poolMore"
@@ -294,7 +294,7 @@
           <div v-if="state.checkInfo.lp_holders.length > 3" @click="showMore(2)"
             class="h-[2.5rem] border border-[#ffffffa8] rounded-[0.75rem] text-center leading-[2.5rem] text-[0.875rem] text-[#fff] font-medium mt-[1rem]"
             style="font-family: Hezaedrus-Medium;">
-            {{ state.poolMore == 3 ? 'VIEW ALL' : 'PUT AWAY' }}
+            {{ state.poolMore == 3 ? t('viewAll') : t('putAway') }}
           </div>
         </div>
       </div>
@@ -455,9 +455,9 @@ const closeFilter = () => {
 }
 
 const tabList = [
-  { title: 'DECHECK REVIEW', value: 1 },
-  { title: 'CHECK REPORT', value: 2 },
-  { title: 'RISK CHECK', value: 3 },
+  { title: t('decheckReview'), value: 1 },
+  { title: t('checkReport'), value: 2 },
+  { title: t('riskCheck'), value: 3 },
 ]
 
 const tabHandle = (value) => {

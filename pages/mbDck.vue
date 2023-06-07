@@ -13,7 +13,7 @@
       </template>
     </mbHeader>
     <div class="text-[50px] text-center font-black leading-[45px] linear-text" style="font-family: Hezaedrus-Black;">
-      <p>10,000,000</p>
+      <p>{{ state.all ? state.all : 'Processing' }}</p>
       <p>DCK</p>
     </div>
     <div class="mt-[30px] bg h-[247px] relative">
@@ -29,7 +29,7 @@
       <p class="text-[24px] leading-[24px] text-[#ffffff] font-bold mt-[10px]" style="font-family: Hezaedrus-Bold;">
         10,000,000</p>
       <div
-        class="h-[40px] leading-[40px] w-[312px] border border-[#FFFFFF1C] divBg rounded-[12px] mx-auto mt-[20px] text-[16px] text-[#ffffff] font-medium"
+        :class="`${state.all ? 'divBg':'bg-[#ffffffa8]'} h-[40px] leading-[40px] w-[312px] border border-[#FFFFFF1C] rounded-[12px] mx-auto mt-[20px] text-[16px] text-[#ffffff] font-medium`"
         style="font-family: Hezaedrus-Medium;">COLLECT</div>
     </div>
     <div class="mt-[24px] bg-[#302D34] rounded-t-[12px] p-[16px] pb-[60px]">
@@ -50,9 +50,12 @@
 </template>
 
 <script setup>
+import { reactive, onMounted } from 'vue';
 import mbHeader from '@/src/components/mobile/mbHeader.vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
+import web3js from '@/src/utils/link'
+import { all } from 'axios';
 
 const historyList = [
   { id: 1, num: 100000, time: '2023-05-24' },
@@ -67,9 +70,43 @@ const historyList = [
   { id: 10, num: 500, time: '2023-05-24' },
 ]
 
+const state = reactive({
+  isReviewer: 0,
+  isAuditor: 0,
+  isResearcher: 0,
+  isProducer: 0,
+  ratio: 0,
+  reward: 0,
+  all: 0
+})
+
 const goBack = () => {
   router.go(-1);
 }
+
+const init = async() => {
+  await web3js.isReviewerNFT().then(res => {state.isReviewer = res;});
+  await web3js.isAuditorNFT().then(res => {state.isAuditor = res})
+  await web3js.isResearcherNFT().then(res => {state.isResearcher = res})
+  await web3js.isProducerNFT().then(res => {state.isProducer = res})
+  await web3js.collectGlod().then(res => {state.reward = res})
+
+  if(state.isAuditor >= 1 || state.isResearcher >= 1 || state.isProducer >= 1){
+    web3js.getHighRatio().then(res => {
+      state.ratio = res;
+      state.all = state.reward * state.ratio
+    })
+  }else if(state.isReviewer >= 1){
+    web3js.getlowRatio().then(res => {
+      state.ratio = res;
+      state.all = state.reward * state.ratio
+    })
+  }  
+}
+
+onMounted(()=>{
+  init();
+})
 </script>
 
 <style scoped>

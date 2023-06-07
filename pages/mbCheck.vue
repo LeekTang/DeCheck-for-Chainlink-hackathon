@@ -2,7 +2,7 @@
   <div class="bg-[#070312] min-h-screen">
     <mbHeader>
       <template v-slot:left>
-        CHECK
+        {{ t('Check') }}
       </template>
     </mbHeader>
     <div class="border border-[#ffffff1c] bg-[#1B1A1D] p-[1rem] m-[1rem] rounded-[0.75rem]">
@@ -12,16 +12,16 @@
         {{ state.chainName }}
         <img src="/images/mobile/common/down.svg" class="h-[16px] w-[16px] ml-[16px]" />
       </div>
-      <input class="inputClass mt-[1rem] text-[0.75rem]" v-model="state.inputValue" placeholder="Search contract address" />
+      <input class="inputClass mt-[1rem] text-[0.75rem]" v-model="state.inputValue" :placeholder="t('searchAddress')" />
       <div
         class="h-[2.5rem] leading-[2.5rem] rounded-[0.75rem] btnBg text-[#fff] text-[1rem] font-medium text-center mt-[2rem]"
         style="font-family: Hezaedrus-Medium;" @click="searchClick">
-        SEARCH
+        {{ t('Search') }}
       </div>
     </div>
     <div class="mt-[2rem]">
       <div class="px-[1rem]">
-        <p class="text-[#fff] text-[12px]" style="font-family: Hezaedrus-Bold;">MOST SEARCHES</p>
+        <p class="text-[#fff] text-[12px]" style="font-family: Hezaedrus-Bold;">{{ t('mostSrearch') }}</p>
       </div>
       <div class="mt-[1rem] px-[1rem] pb-[3.5rem]">
         <div v-for="item in hot" :key="item"
@@ -38,7 +38,7 @@
           </div>
         </div>
       </div>
-      <van-action-sheet v-model:show="state.chainShow" title="CONTRACTS">
+      <van-action-sheet v-model:show="state.chainShow" :title="t('Contracts')">
         <van-radio-group v-model="state.chainId" checked-color="#9044FF">
           <van-cell-group inset :border="false" style="font-family: Hezaedrus-Medium;">
             <van-cell :border="false" v-for="item in options" :key="item.value" :title="item.label"
@@ -63,6 +63,8 @@ import { abbr } from '@/src/utils/utils'
 import request from '@/src/utils/request'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
+import { useI18n } from  'vue-i18n'
+const { t } = useI18n();
 
 const state = reactive({
   chainShow: false,

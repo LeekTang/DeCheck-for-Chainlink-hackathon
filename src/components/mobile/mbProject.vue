@@ -1,6 +1,6 @@
 <template>
   <div class="mt-[1.5rem]">
-    <div class="text-[1rem] text-[#ffffffa8] px-[1rem]" style="font-family: Hezaedrus-Bold;">PROJECTS</div>
+    <div class="text-[1rem] text-[#ffffffa8] px-[1rem]" style="font-family: Hezaedrus-Bold;">{{ t('PROJECTS') }}</div>
     <div class="mt-[1rem] flex px-[1rem] text-[14px]" style="font-family: Hezaedrus-Medium;">
       <div
         :class="`${ state.tabIndex == 1 ? 'bg-[#fff]' : 'bg-[#1B1A1D] text-[#ffffffa8]'} h-[2rem] leading-[2rem] px-[1rem]  text-center rounded-[12px] border border-[#ffffff1c] mr-[1rem] flex items-center`"
@@ -10,7 +10,7 @@
       </div>
       <div
         :class="`${state.tabIndex == 2 ? 'bg-[#fff]' : 'bg-[#1B1A1D] text-[#ffffffa8]' } h-[2rem] leading-[2rem] px-[1.5rem] text-center rounded-[12px] border border-[#ffffff1c]`" @click="watchClick">
-        Wacth List</div>
+        {{ t('wacthlist') }}</div>
     </div>
     <van-action-sheet v-model:show="state.screen" title="FILTER" :closeable="false">
       <van-radio-group v-model="state.filterValue" checked-color="#9044FF">
@@ -36,12 +36,12 @@
     <div class="bg-[#1B1A1D] rounded-t-[1rem] mt-[1rem] mb-[3.5rem]">
       <div class="flex justify-between text-[14px] text-[#ffffffa8] px-[1rem] h-[43px] leading-[43px] border-b border-[#ffffff1c]"
         style="font-family: Hezaedrus-Regular;">
-        <div class="w-[10rem]">Name</div>
-        <div class="w-[8rem]">Price</div>
+        <div class="w-[10rem]">{{ t('Name') }}</div>
+        <div class="w-[8rem]">{{ t('price') }}</div>
         <div class="">24h%</div>
       </div>
       <div>
-        <van-list v-model:loading="state.loading" :finished="state.finished" loading-text="In the load" finished-text="No more data" @load="onLoad">
+        <van-list v-model:loading="state.loading" :finished="state.finished" loading-text="In the load" :finished-text="t('noMore')" @load="onLoad">
           <div v-for="(item,index) in state.projectList" :key="index" @click="proClick(item.id, item.projectId)"
             class="flex justify-between h-[2.5rem] leading-[2.5rem] text-[#fff] text-[12px] mx-[1rem] border-b border-[#ffffff1c] font-medium"
             style="font-family: Hezaedrus-Medium;">
@@ -70,6 +70,8 @@ import { imgError } from '@/src/utils/utils'
 import request from '@/src/utils/request'
 import { useRouter } from 'vue-router'
 const router = useRouter()
+import { useI18n } from  'vue-i18n'
+const { t } = useI18n();
 
 const state = reactive({
   loading: false,

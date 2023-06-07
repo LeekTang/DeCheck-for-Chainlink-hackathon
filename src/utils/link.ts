@@ -8,6 +8,13 @@ const provider: ethAuth = {
 }
 
 import { abi } from './NFTABI'
+import { rewardAbi } from './getrewardABI'
+const abiAddress = "0x904812b9727709f0eFc431a84c7fb22B5f5c09c4"
+const rewardAbiAddress = '0x41eEe609340085F59aC0BA0f6e6C3E26049b5661'
+const ReviewerNFT= "0xEECa91976A097f79d9dF61B831f6e9fc3B614C04"
+const AuditorNFT = "0x752e934db5dB81402B900DED0515cAD7A1DD6be3"
+const ResearcherNFT = "0x5F6bed6913535465Cb6c738B21943fE75A577cD6"
+const ProducerNFT = "0x76AB56D45E19207fF5a3682df27BaB5c299cf92d"
 
 export default {
     ...provider,
@@ -71,16 +78,102 @@ export default {
         }
     },
 
-    NFTget:async function (){
+    isReviewerNFT:async function (){
         let provider = new Web3(window.ethereum);
         let accounts = await provider.eth.getAccounts()
-        console.log(accounts[0])
-        let newContract = new provider.eth.Contract( abi , '0x904812b9727709f0eFc431a84c7fb22B5f5c09c4');
-        console.log(newContract.methods)
-        newContract.methods.balanceOf(accounts[0]).call().then( res => {
-            console.log(res)
+        let newContract = new provider.eth.Contract( abi , ReviewerNFT);
+        return new Promise((reslove,reject) => {
+            newContract.methods.balanceOf(accounts[0]).call().then( (res:any) => {
+                reslove(res)
+            }).catch ((err: any) => {
+                reject(err)
+            })
         })
-        
+    },
+
+    isAuditorNFT:async function (){
+        let provider = new Web3(window.ethereum);
+        let accounts = await provider.eth.getAccounts()
+        let newContract = new provider.eth.Contract( abi , AuditorNFT);
+        return new Promise((reslove,reject) => {
+            newContract.methods.balanceOf(accounts[0]).call().then( (res:any) => {
+                reslove(res)
+            }).catch ((err: any) => {
+                reject(err)
+            })
+        })
+    },
+
+    isResearcherNFT:async function (){
+        let provider = new Web3(window.ethereum);
+        let accounts = await provider.eth.getAccounts()
+        let newContract = new provider.eth.Contract( abi , ResearcherNFT);
+        return new Promise((reslove,reject) => {
+            newContract.methods.balanceOf(accounts[0]).call().then( (res:any) => {
+                reslove(res)
+            }).catch ((err: any) => {
+                reject(err)
+            })
+        })
+    },
+
+    isProducerNFT:async function (){
+        let provider = new Web3(window.ethereum);
+        let accounts = await provider.eth.getAccounts()
+        let newContract = new provider.eth.Contract( abi , ProducerNFT);
+        return new Promise((reslove,reject) => {
+            newContract.methods.balanceOf(accounts[0]).call().then( (res:any) => {
+                reslove(res)
+            }).catch ((err: any) => {
+                reject(err)
+            })
+        })
+    },
+    
+    getlowRatio: async () => {
+        let provider = new Web3(window.ethereum);
+        let newContract = new provider.eth.Contract( rewardAbi , rewardAbiAddress);
+        return new Promise((reslove,reject) => {
+            newContract.methods.lowrewardcardinality().call().then( (res:any) => {
+                reslove(res)
+            }).catch ((err: any) => {
+                reject(err)
+            })
+        })
+    },
+
+    getHighRatio: async () => {
+        let provider = new Web3(window.ethereum);
+        let newContract = new provider.eth.Contract( rewardAbi , rewardAbiAddress);
+        return new Promise((reslove,reject) => {
+            newContract.methods.highrewardcardinality().call().then( (res:any) => {
+                reslove(res)
+            }).catch ((err: any) => {
+                reject(err)
+            })
+        })
+    },
+
+    collectGlod: async function (){
+        let provider = new Web3(window.ethereum);
+        let accounts = await provider.eth.getAccounts()
+        let newContract = new provider.eth.Contract( rewardAbi , rewardAbiAddress);
+        return new Promise((reslove,reject) => {
+            newContract.methods.getuserforreward(accounts[0]).call().then( (res:any) => {
+                reslove(res)
+            }).catch ((err: any) => {
+                reject(err)
+            })
+        })
+    },
+
+    lastLuckyTime: async function (){
+        let provider = new Web3(window.ethereum);
+        let accounts = await provider.eth.getAccounts()
+        let newContract = new provider.eth.Contract( rewardAbi , rewardAbiAddress);
+        newContract.methods.claimuserforreward(accounts[0]).call().then( res => {
+
+        })
     },
 
     getSign(message = 'Welcome to DeCheck! Click to sign in and accept the DeCheck Terms of Service: https://decheck.io This request will not trigger a blockchain transaction or cost any gas fees.') {

@@ -2,7 +2,7 @@
     <div class="bg-[#070312] min-h-screen pb-[60px]">
         <mbHeader>
             <template v-slot:left>
-                MY PROFILE
+                {{ t('profile') }}
             </template>
         </mbHeader>
         <div class="w-[100%] pt-[16px] px-[16px] min-h-screen overflow-y-auto overscroll-y-contain"
@@ -23,28 +23,28 @@
                     <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] "
                         @click="urlPush('mbDck')">
                         <img src="/images/mobile/profile/message.svg" alt="">
-                        <h4 class="pt-[10px]">DCK Reward</h4>
+                        <h4 class="pt-[10px]">{{ t('dck') }}</h4>
                     </div>
                     <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] "
                         @click="state.soonShow = true">
                         <img src="/images/mobile/profile/mail.svg" alt="">
-                        <h4 class="pt-[10px]">Invite Reward</h4>
+                        <h4 class="pt-[10px]">{{ t('invite') }}</h4>
                     </div>
                 </div>
                 <div class="flex-col w-[50%] pl-[8px]">
                     <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] "
                         @click="urlPush('mbLuckyBox')">
                         <img src="/images/mobile/profile/gift.svg" alt="">
-                        <h4 class="pt-[10px]">Lucky Box</h4>
+                        <h4 class="pt-[10px]">{{ t('lucky') }}</h4>
                     </div>
                     <div class="mb-[16px] rounded-[12px] p-[16px] border border-solid bg-[#1B1A1D] border-[#ffffff1c] "
                         @click="state.soonShow = true">
                         <img src="/images/mobile/profile/bounty.svg" alt="">
-                        <h4 class="pt-[10px]">DeCheck Bounty</h4>
+                        <h4 class="pt-[10px]">{{ t('bounty') }}</h4>
                     </div>
                 </div>
             </div>
-            <h3 class="text-textGray text-[14px]">MY REVIEWS ({{ state.proNumber }})</h3>
+            <h3 class="text-textGray text-[14px]">{{ t('myreviews') }} ({{ state.proNumber }})</h3>
             <div class="text-center h-[6rem] leading-[6rem]" v-if="state.loading">
                 <van-loading color="#0094ff" />
             </div>
@@ -90,6 +90,8 @@ import { userStore } from '@/src/stores/user'
 const store = userStore()
 import web3js from '@/src/utils/link'
 const runConfig = useRuntimeConfig()
+import { useI18n } from  'vue-i18n'
+const { t } = useI18n();
 
 const state = reactive({
     loading: true,

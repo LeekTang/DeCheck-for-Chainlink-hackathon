@@ -45,7 +45,7 @@
           @click="closeFilter">Cancel</div>
         <div
           class="h-[40px] w-[156px] leading-[40px] rounded-[12px] text-[#070312] bg-[#ffffff] border border-[#ffffff54]"
-          @click="closeFilter">ok</div>
+          @click="onSetLanguage">ok</div>
       </div>
     </van-action-sheet>
   </div>
@@ -56,6 +56,8 @@ import { reactive, onMounted, ref, useSlots } from 'vue'
 import web3js from '@/src/utils/link'
 import request from '@/src/utils/request'
 import { abbr } from '@/src/utils/utils'
+import { useI18n } from  'vue-i18n'
+const { t,locale } = useI18n();
 import { userStore } from '@/src/stores/user'
 const store = userStore()
 const runConfig = useRuntimeConfig()
@@ -63,16 +65,14 @@ const runConfig = useRuntimeConfig()
 const showRight = ref(false);
 const slotRight = !!useSlots().right;
 
-onMounted(() => {
-  if (slotRight) {
-    showRight.value = true;
-  }
-})
-
+const onSetLanguage = () => {
+  locale.value = localStorage.language = state.filterValue;
+  state.screen = false
+};
 
 const state = reactive({
   screen: false,
-  filterValue: 'en',
+  filterValue: 'EN',
   showPopover: false
 })
 
@@ -80,9 +80,13 @@ const changeLanguage = () => {
   state.screen = true
 }
 
+const initLanguage = () => {
+	locale.value = localStorage.language || 'EN';
+};
+
 const language = [
-  { title: 'English', value: 'en' },
-  { title: 'Chinese', value: 'zh' }
+  { title: 'English', value: 'EN' },
+  { title: 'Chinese', value: 'ZH' }
 ]
 
 const closeFilter = () => {
@@ -128,6 +132,13 @@ const connectClick = () => {
     })
   })
 }
+
+onMounted(() => {
+  initLanguage();
+  if (slotRight) {
+    showRight.value = true;
+  }
+})
 </script>
 
 <style scoped>
